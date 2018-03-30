@@ -5,26 +5,57 @@
  */
 package Blockchain;
 
+import java.util.Objects;
 
 
-public class Vote implements IVote{
+
+public class Vote {
     
 private String VoteId;
-private IElect Elect;
+private Elect Elect;
 
-public Vote(String voteId,IElect elect){
+public Vote(String voteId,Elect elect){
 this.VoteId=voteId;
 this.Elect=elect;
 }
 
+    public String getVoteId() {
+        return VoteId;
+    }
+
+    public Elect getElect() {
+        return Elect;
+    }
+
+    public void setVoteId(String VoteId) {
+        this.VoteId = VoteId;
+    }
+
+    public void setElect(Elect Elect) {
+        this.Elect = Elect;
+    }
+
+    
+  
+
     @Override
-    public IVoter getVoter() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public int hashCode() {
+        int hash = 3;
+        hash = 17 * hash + Objects.hashCode(this.VoteId);
+        hash = 17 * hash + Objects.hashCode(this.Elect);
+        return hash;
     }
 
     @Override
-    public IElect getElect() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Vote other = (Vote) obj;
+        return true;
     }
     
 }

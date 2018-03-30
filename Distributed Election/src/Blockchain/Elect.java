@@ -5,11 +5,13 @@
  */
 package Blockchain;
 
+import java.util.Objects;
+
 /**
  *
  * @author Fneich
  */
-public class Elect implements IElect{
+public class Elect {
     private int Id;
     private String FirstName;
     private String LastName;
@@ -52,6 +54,28 @@ public class Elect implements IElect{
 
     public void setParty(String Party) {
         this.Party = Party;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + this.Id;
+        hash = 97 * hash + Objects.hashCode(this.FirstName);
+        hash = 97 * hash + Objects.hashCode(this.LastName);
+        hash = 97 * hash + Objects.hashCode(this.Party);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Elect other = (Elect) obj;
+        return true;
     }
    
     

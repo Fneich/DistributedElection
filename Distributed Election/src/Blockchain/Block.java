@@ -7,6 +7,7 @@ package Blockchain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 
 /**
  *
@@ -14,7 +15,7 @@ import java.util.Arrays;
  */
 public class Block {
     
-    private  ArrayList<IVote> Votes=new ArrayList<>();
+    private  ArrayList<Vote> Votes=new ArrayList<>();
     private  int PreviousHash;
     private int Hash;
     
@@ -26,10 +27,35 @@ public class Block {
         Object[] contents ={this.Votes.hashCode(),this.PreviousHash};
       this.Hash = Arrays.hashCode(contents);
     }
-    public void AddVote(IVote vote){
+    public void AddVote(Vote vote){
         this.Votes.add(vote);
         this.ReCalculateHash();
     }
     public int getHash(){return this.Hash;}
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.Votes);
+        hash = 37 * hash + this.PreviousHash;
+        hash = 37 * hash + this.Hash;
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Block other = (Block) obj;
+        return true;
+    }
+
+    public ArrayList<Vote> getVotes() {
+        return Votes;
+    }
     
 }
