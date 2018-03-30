@@ -4,12 +4,49 @@
  * and open the template in the editor.
  */
 package Blockchain;
-
+import java.util.UUID;
 /**
  *
  * @author Fneich
  */
 public class Voter implements IVoter{
-    public String Name;
-    public Voter(String name){this.Name=name;}
+    private UUID Id ;
+    private String FirstName;
+    private String LastName;
+    
+
+    public Voter(UUID Uuid, String FirstName, String LastName) {
+        this.Id = Uuid;
+        this.FirstName = FirstName;
+        this.LastName = LastName;
+    }
+
+    public UUID getUuid() {
+        return Id ;
+    }
+
+    public void setUuid(UUID Uuid) {
+        this.Id  = Uuid;
+    }
+
+    public String getFirstName() {
+        return FirstName;
+    }
+
+    public void setFirstName(String FirstName) {
+        this.FirstName = FirstName;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String LastName) {
+        this.LastName = LastName;
+    }
+    
+    
+    
+    
+    
 }

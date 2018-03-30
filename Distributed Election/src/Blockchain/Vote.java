@@ -9,11 +9,11 @@ package Blockchain;
 
 public class Vote implements IVote{
     
-private IVoter Voter;
+private String VoteId;
 private IElect Elect;
 
-public Vote(IVoter voter,IElect elect){
-this.Voter=voter;
+public Vote(String voteId,IElect elect){
+this.VoteId=voteId;
 this.Elect=elect;
 }
 
