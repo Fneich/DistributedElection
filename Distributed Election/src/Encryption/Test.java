@@ -29,7 +29,7 @@ public class Test {
      AsymetricEncryption AE2 = new AsymetricEncryption();
         try {
             byte[] keyBytes = AE2.getGenerateKeys().getPublicKey().getEncoded();
-            String s=AE1.encryptText("Hello");
+            String s=AE1.encryptText("Hello",keyBytes);
             System.out.println(s);
             
             
