@@ -19,6 +19,7 @@ public class Citizen implements ICitizen {
     private Date BirthDate;
     private int PostalCode;
     private int VoterId;
+    private Boolean CanVoted;
     private Boolean Voted;
 
     public Citizen(UUID Id, String FirstName, String LastName, Date BirthDate, int PostalCode) {
@@ -28,6 +29,15 @@ public class Citizen implements ICitizen {
         this.BirthDate = BirthDate;
         this.PostalCode = PostalCode;
         this.Voted=false;
+        this.CanVoted=true;
+    }
+
+    public void setCanVoted(Boolean CanVoted) {
+        this.CanVoted = CanVoted;
+    }
+
+    public Boolean getCanVoted() {
+        return CanVoted;
     }
 
     public void setVoted(Boolean Voted) {

@@ -5,16 +5,18 @@
  */
 package Audit;
 
+import java.io.IOException;
+
 /**
  *
  * @author Fneich
  */
 public class AuditProgram {
-    public static void main(String args[]){
+    public static void main(String args[]) throws IOException{
     
        // AuditMaster auditMaster = new AuditMaster();
         //Thread threadAuditMaster = new Thread(auditMaster);
         //threadAuditMaster.start();
-        Data.A();
+        Data.B();
     }
 }
