@@ -8,6 +8,7 @@ package Audit;
 import Blockchain.ICitizen;
 import Blockchain.Citizen;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -31,9 +32,9 @@ public class Data {
    public static ArrayList<Citizen> CitizensList = new ArrayList<Citizen>();
    public static void A() throws FileNotFoundException, IOException{
 
-
-
-
+       CitizensList.add(new Citizen(UUID.randomUUID(),"ggg","dgd",new Date(1,12,1990),23));
+CitizensList.add(new Citizen(UUID.randomUUID(),"fsdf","asfdad",new Date(1,12,1990),23));
+CitizensList.add(new Citizen(UUID.randomUUID(),"dfgdg","ggg",new Date(1,12,1990),23));
    
    Gson gson=new Gson();
    String data=gson.toJson(CitizensList);
@@ -45,9 +46,9 @@ public class Data {
    }
    
    public static void B() throws FileNotFoundException, IOException{
-       Reader reader = new FileReader("Citizens.json");
+       Reader reader = new FileReader("Citizens2.json");
 
-           Gson gson=new Gson();
+           Gson gson=new GsonBuilder().setDateFormat("MMM dd, yyyy").create();
            java.lang.reflect.Type listType = new TypeToken<ArrayList<Citizen>>(){}.getType();
             ArrayList<Citizen> list= gson.fromJson(reader,listType);
             System.out.println(list.size());
