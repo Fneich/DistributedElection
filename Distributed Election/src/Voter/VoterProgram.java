@@ -16,7 +16,7 @@ import java.net.UnknownHostException;
  * @author Fneich
  */
 public class VoterProgram {
-    public static Voter voter;
+    public static int voterId=0;
      public static void main(String args[]) throws IOException, ClassNotFoundException{
          
          

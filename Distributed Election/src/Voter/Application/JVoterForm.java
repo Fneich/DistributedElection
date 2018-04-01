@@ -5,6 +5,10 @@
  */
 package Voter.Application;
 
+import Blockchain.Voter;
+import Voter.VoterRegistrationRepository;
+import java.util.UUID;
+
 /**
  *
  * @author Fneich
@@ -51,6 +55,11 @@ public class JVoterForm extends javax.swing.JFrame {
         jLabel4.setText("Voting Id:");
 
         BtnRegister.setText("Register");
+        BtnRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnRegisterActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel5.setText("Registration Form");
@@ -111,6 +120,12 @@ public class JVoterForm extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BtnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegisterActionPerformed
+        // TODO add your handling code here:
+       Voter voter = new Voter(UUID.fromString(txtId.getText()),txtFirstName.getText(),txtLastName.getText());
+       VoterRegistrationRepository VRR = new VoterRegistrationRepository(voter);
+    }//GEN-LAST:event_BtnRegisterActionPerformed
 
     /**
      * @param args the command line arguments
