@@ -10,6 +10,7 @@ import Communications.Message;
 import Communications.Message.MessageKey;
 import Communications.Message.MessageSide;
 import Encryption.AsymetricEncryption;
+import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -43,8 +44,8 @@ public class Audit implements Runnable{
       socketWriter = new BufferedWriter(new OutputStreamWriter(
           socket.getOutputStream()));
        System.out.println("I wait a registration");
-      String inMsg = null;
-      inMsg = socketReader.readLine();
+      String inMsg = socketReader.readLine();
+      
           System.out.println("I receve a registration");
         System.out.println("Received from  client: " + inMsg);
        // if (inMsg.equalsIgnoreCase("bye")) {
@@ -72,8 +73,10 @@ public class Audit implements Runnable{
     
     
       AsymetricEncryption AE = new AsymetricEncryption();
-      Message YourKey = new Message(MessageKey.PublicKey,MessageSide.Audit,AE.getGenerateKeys().getPublicKey().toString());
+      Gson g=new Gson();
+      Message YourKey = new Message(MessageKey.PublicKey,MessageSide.Audit,g.toJson(AE.getGenerateKeys().getPublicKey()) );
       socketWriter.write(YourKey.toJson());
+      socketWriter.newLine();
       socketWriter.flush();    
       String m = socketReader.readLine();
       Message YourInfo = Message.fromJson(m);
@@ -88,6 +91,7 @@ public class Audit implements Runnable{
           String VotingIdEncrypted =AE2.encryptText(votingidString, MyKey.getValue().getBytes());
           Message YourId = new Message(MessageKey.Information,MessageSide.Audit,VotingIdEncrypted);
           socketWriter.write(YourId.toJson());
+          socketWriter.newLine();
           socketWriter.flush();
       }
     
