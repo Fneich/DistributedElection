@@ -5,6 +5,7 @@
  */
 package Voter;
 
+import Blockchain.Voter;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
@@ -15,8 +16,14 @@ import java.net.UnknownHostException;
  * @author Fneich
  */
 public class VoterProgram {
+    public static Voter voter;
      public static void main(String args[]) throws IOException, ClassNotFoundException{
-   while(true){
+         
+         
+         
+         
+         
+         while(true){
     try{
        VoterRepository vr = new VoterRepository();
        vr.ConnectToAudit();
