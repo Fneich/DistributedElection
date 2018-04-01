@@ -5,6 +5,7 @@
  */
 package Audit;
 
+import static Audit.Data.CitizensList;
 import Blockchain.ICitizen;
 import Blockchain.Citizen;
 import com.google.gson.Gson;
@@ -30,29 +31,24 @@ import java.util.UUID;
 public class Data {
     
    public static ArrayList<Citizen> CitizensList = new ArrayList<Citizen>();
-   public static void A() throws FileNotFoundException, IOException{
-
-       CitizensList.add(new Citizen(UUID.randomUUID(),"ggg","dgd",new Date(1,12,1990),23));
-CitizensList.add(new Citizen(UUID.randomUUID(),"fsdf","asfdad",new Date(1,12,1990),23));
-CitizensList.add(new Citizen(UUID.randomUUID(),"dfgdg","ggg",new Date(1,12,1990),23));
    
+   public static void LoadCitizensData() throws FileNotFoundException{
+            Reader reader = new FileReader("Citizens.json");
+            Gson gson=new GsonBuilder().setDateFormat("MMM dd, yyyy").create();
+           java.lang.reflect.Type listType = new TypeToken<ArrayList<Citizen>>(){}.getType();
+            CitizensList= gson.fromJson(reader,listType);
+   }
+   public static void SaveCitizensData() throws FileNotFoundException, IOException{
+
    Gson gson=new Gson();
    String data=gson.toJson(CitizensList);
-   System.out.println(data);
-   BufferedWriter out = new BufferedWriter(new FileWriter("Citizens.txt"));
+   BufferedWriter out = new BufferedWriter(new FileWriter("Citizens.json"));
     out.write(data);
     out.flush();
     out.close();
    }
    
-   public static void B() throws FileNotFoundException, IOException{
-       Reader reader = new FileReader("Citizens2.json");
 
-           Gson gson=new GsonBuilder().setDateFormat("MMM dd, yyyy").create();
-           java.lang.reflect.Type listType = new TypeToken<ArrayList<Citizen>>(){}.getType();
-            ArrayList<Citizen> list= gson.fromJson(reader,listType);
-            System.out.println(list.size());
-   }
    public static void GenerateVoterId()
    {
        
