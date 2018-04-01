@@ -36,7 +36,7 @@ public class VoterProgram {
     try{
         Voter voter = new Voter(UUID.randomUUID(),"scfd","kdkdd");
        VoterRegistrationRepository vr = new VoterRegistrationRepository(voter);
-       vr.Register();
+       vr.getVotingId();
        break;
     }catch(UnknownHostException ex){System.out.println("No Audit Available !!");} 
     }

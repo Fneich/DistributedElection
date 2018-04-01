@@ -54,6 +54,11 @@ public class Voter implements IVoter{
     Gson g=new Gson();
     return g.toJson(this);
     }
+
+    @Override
+    public String toString() {
+        return "Voter{" + "Id=" + Id + ", FirstName=" + FirstName + ", LastName=" + LastName + '}';
+    }
     
     
 }

@@ -65,14 +65,16 @@ public class Data {
    public static int getVotingId(Voter voter){
         Citizen citizen=null;
        for(Citizen c:CitizensList){
-       if(c.getId()==voter.getUuid())
+       if(c.getId().equals(voter.getUuid()))
        {
            citizen = c;
            break;
        }
        }
-       if(citizen!=null && citizen.getFirstName()==voter.getFirstName() && citizen.getLastName()==voter.getLastName())
+       System.out.println(citizen.toString());
+       if(citizen!=null && citizen.getFirstName().equals(voter.getFirstName()) && citizen.getLastName().equals(voter.getLastName()))
        {
+           System.out.println(citizen.getVoterId());
            return citizen.getVoterId();
        }
            return 0;

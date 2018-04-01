@@ -136,7 +136,7 @@ public class JVoterForm extends javax.swing.JFrame {
        Voter voter = new Voter(UUID.fromString(txtId.getText()),txtFirstName.getText(),txtLastName.getText());
        VoterRegistrationRepository VRR = new VoterRegistrationRepository(voter);
         try {
-            txtVotingId.setText(String.valueOf(VRR.Register()));
+            txtVotingId.setText(String.valueOf(VRR.getVotingId()));
         } catch (IOException ex) {
             Logger.getLogger(JVoterForm.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchAlgorithmException ex) {

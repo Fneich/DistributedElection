@@ -11,12 +11,14 @@ import Communications.Message.MessageKey;
 import Communications.Message.MessageSide;
 import Encryption.AsymetricEncryption;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.InvalidKeyException;
@@ -47,7 +49,7 @@ public class VoterRegistrationRepository {
         this.voter = voter;
     }
     
-    public int Register() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException{
+    public int getVotingId() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException{
     Socket socket = new Socket("localhost", 12900);
     System.out.println("Started client  socket at " + socket.getLocalSocketAddress());
     BufferedReader socketReader = new BufferedReader(new InputStreamReader(
@@ -65,19 +67,22 @@ public class VoterRegistrationRepository {
     System.out.println("I send a registration");
     String outMsg = null;
     String Mykey = socketReader.readLine();
-    System.out.println("I Receve My Key");
+    System.out.println("I Receve My Key:"+Mykey);
     Message MyKey = Message.fromJson(Mykey);
+    
     AsymetricEncryption AE = new AsymetricEncryption();
+    System.out.println(MyKey.getValue());
     Gson g =new Gson();
-    PublicKey publicKey =g.fromJson(MyKey.getValue(), PublicKey.class);
+    java.lang.reflect.Type listType = new TypeToken<byte[]>(){}.getType();
     System.out.println("???:"+MyKey.getValue());
-    String MyinfoEncrypted=AE.encryptText(voter.toJson(), publicKey.getEncoded());
+    byte[] b =g.fromJson(MyKey.getValue(),listType);
+    String MyinfoEncrypted=AE.encryptText(voter.toJson(), b);
     Message Myinfo = new Message(MessageKey.Information,MessageSide.Voter,MyinfoEncrypted);
     socketWriter.write(Myinfo.toJson());
     socketWriter.newLine();
     socketWriter.flush();
     AsymetricEncryption AE2 = new AsymetricEncryption();
-    Message YourKey = new Message(MessageKey.PublicKey,MessageSide.Voter,AE2.getGenerateKeys().getPublicKey().toString());
+    Message YourKey = new Message(MessageKey.PublicKey,MessageSide.Voter,g.toJson( AE2.getGenerateKeys().getPublicKey().getEncoded()));
     socketWriter.write(YourKey.toJson());
     socketWriter.newLine();
     socketWriter.flush(); 

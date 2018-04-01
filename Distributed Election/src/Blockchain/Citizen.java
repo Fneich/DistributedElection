@@ -115,6 +115,11 @@ public class Citizen implements ICitizen {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Citizen{" + "Id=" + Id + ", FirstName=" + FirstName + ", LastName=" + LastName + ", BirthDate=" + BirthDate + ", PostalCode=" + PostalCode + ", VoterId=" + VoterId + ", CanVoted=" + CanVoted + ", Voted=" + Voted + '}';
+    }
     
     
 }

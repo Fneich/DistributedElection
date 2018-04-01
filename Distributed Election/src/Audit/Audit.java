@@ -11,6 +11,7 @@ import Communications.Message.MessageKey;
 import Communications.Message.MessageSide;
 import Encryption.AsymetricEncryption;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -74,21 +75,24 @@ public class Audit implements Runnable{
     
       AsymetricEncryption AE = new AsymetricEncryption();
       Gson g=new Gson();
-      Message YourKey = new Message(MessageKey.PublicKey,MessageSide.Audit,g.toJson(AE.getGenerateKeys().getPublicKey()) );
+      Message YourKey = new Message(MessageKey.PublicKey,MessageSide.Audit,g.toJson(AE.getGenerateKeys().getPublicKey().getEncoded()) );
       socketWriter.write(YourKey.toJson());
       socketWriter.newLine();
       socketWriter.flush();    
       String m = socketReader.readLine();
       Message YourInfo = Message.fromJson(m);
       String info=AE.decryptText(YourInfo.getValue());
-      Voter v =Voter.fromJson(info);
+      Voter v =Voter.fromJson(info); 
       int votingid =Data.getVotingId(v);
+      System.out.println(votingid );
       m = socketReader.readLine();
       Message MyKey = Message.fromJson(m);
       if(MyKey.getKey()==MessageKey.PublicKey){
           AsymetricEncryption AE2 = new AsymetricEncryption();
-          String votingidString = String.valueOf(votingid);     
-          String VotingIdEncrypted =AE2.encryptText(votingidString, MyKey.getValue().getBytes());
+          String votingidString = String.valueOf(votingid); 
+          java.lang.reflect.Type listType = new TypeToken<byte[]>(){}.getType();
+          byte[] b =g.fromJson(MyKey.getValue(),listType);
+          String VotingIdEncrypted =AE2.encryptText(votingidString, b);
           Message YourId = new Message(MessageKey.Information,MessageSide.Audit,VotingIdEncrypted);
           socketWriter.write(YourId.toJson());
           socketWriter.newLine();
