@@ -32,30 +32,29 @@ import javax.crypto.NoSuchPaddingException;
 public class Audit implements Runnable{
     private Socket socket;
     private Thread thread;
+     private  BufferedReader socketReader = null;
+     private BufferedWriter socketWriter = null;
     @Override
     public void run() {
       try{
-      BufferedReader socketReader = null;
-      BufferedWriter socketWriter = null;
+
       socketReader = new BufferedReader(new InputStreamReader(
           socket.getInputStream()));
       socketWriter = new BufferedWriter(new OutputStreamWriter(
           socket.getOutputStream()));
-
+       System.out.println("I wait a registration");
       String inMsg = null;
-      while ((inMsg = socketReader.readLine()) != null) {
+      inMsg = socketReader.readLine();
+          System.out.println("I receve a registration");
         System.out.println("Received from  client: " + inMsg);
        // if (inMsg.equalsIgnoreCase("bye")) {
        // break;
       //}
         Message message = Message.fromJson(inMsg);
-        if(message.getSide()==MessageSide.Voter){VoterService(message);}
         
-        //String outMsg = inMsg;
-        //socketWriter.write(outMsg);
-        //socketWriter.write("\n");
-        //socketWriter.flush();
-      }
+        if(message.getSide()==MessageSide.Voter && message.getKey()==MessageKey.Regitration){VoterService(message);}
+
+      
       socket.close();
       this.thread.join();
     }catch(Exception e){
@@ -70,14 +69,8 @@ public class Audit implements Runnable{
     }
     
     public void VoterService(Message message) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException{
-    if(message.getKey()==MessageKey.Regitration){
     
-    BufferedReader socketReader = null;
-      BufferedWriter socketWriter = null;
-      socketReader = new BufferedReader(new InputStreamReader(
-          socket.getInputStream()));
-      socketWriter = new BufferedWriter(new OutputStreamWriter(
-          socket.getOutputStream()));
+    
       AsymetricEncryption AE = new AsymetricEncryption();
       Message YourKey = new Message(MessageKey.PublicKey,MessageSide.Audit,AE.getGenerateKeys().getPublicKey().toString());
       socketWriter.write(YourKey.toJson());
@@ -97,7 +90,7 @@ public class Audit implements Runnable{
           socketWriter.write(YourId.toJson());
           socketWriter.flush();
       }
-    }
+    
     }
     
 }

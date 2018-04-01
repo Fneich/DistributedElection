@@ -7,7 +7,17 @@ package Voter.Application;
 
 import Blockchain.Voter;
 import Voter.VoterRegistrationRepository;
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 /**
  *
@@ -125,6 +135,25 @@ public class JVoterForm extends javax.swing.JFrame {
         // TODO add your handling code here:
        Voter voter = new Voter(UUID.fromString(txtId.getText()),txtFirstName.getText(),txtLastName.getText());
        VoterRegistrationRepository VRR = new VoterRegistrationRepository(voter);
+        try {
+            txtVotingId.setText(String.valueOf(VRR.Register()));
+        } catch (IOException ex) {
+            Logger.getLogger(JVoterForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(JVoterForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchProviderException ex) {
+            Logger.getLogger(JVoterForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchPaddingException ex) {
+            Logger.getLogger(JVoterForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IllegalBlockSizeException ex) {
+            Logger.getLogger(JVoterForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BadPaddingException ex) {
+            Logger.getLogger(JVoterForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeyException ex) {
+            Logger.getLogger(JVoterForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InvalidKeySpecException ex) {
+            Logger.getLogger(JVoterForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_BtnRegisterActionPerformed
 
     /**

@@ -45,30 +45,37 @@ public class VoterRegistrationRepository {
     }
     
     public int Register() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException{
-                      Socket socket = new Socket("localhost", 12900);
-    System.out.println("Started client  socket at "
-        + socket.getLocalSocketAddress());
+    Socket socket = new Socket("localhost", 12900);
+    System.out.println("Started client  socket at " + socket.getLocalSocketAddress());
     BufferedReader socketReader = new BufferedReader(new InputStreamReader(
         socket.getInputStream()));
     BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(
         socket.getOutputStream()));
     BufferedReader consoleReader = new BufferedReader(
         new InputStreamReader(System.in));
-
-
+     Message RegisterMessage = new Message(MessageKey.Regitration,MessageSide.Voter,"");
+    socketWriter.write(RegisterMessage.toJson());
+    socketWriter.flush();
+    System.out.println("I send a registration");
     String outMsg = null;
-    String Mykey = consoleReader.readLine(); 
-    Message YourKey = Message.fromJson(Mykey);
+    String Mykey = socketReader.readLine();
+    System.out.println("I Receve My Key");
+    Message MyKey = Message.fromJson(Mykey);
     AsymetricEncryption AE = new AsymetricEncryption();
-    String MyinfoEncrypted=AE.encryptText(voter.toJson(), YourKey.getValue().getBytes());
+    String MyinfoEncrypted=AE.encryptText(voter.toJson(), MyKey.getValue().getBytes());
     Message Myinfo = new Message(MessageKey.Information,MessageSide.Voter,MyinfoEncrypted);
     socketWriter.write(Myinfo.toJson());
     socketWriter.flush();
     AsymetricEncryption AE2 = new AsymetricEncryption();
-    
+    Message YourKey = new Message(MessageKey.PublicKey,MessageSide.Voter,AE2.getGenerateKeys().getPublicKey().toString());
+    socketWriter.write(YourKey.toJson());
+    socketWriter.flush(); 
+    String vid = socketReader.readLine(); 
+    Message votingMessageid = Message.fromJson(vid);
+    int VotingId =Integer.parseInt( AE2.decryptText(votingMessageid.getValue()));
     socket.close();
     
-    return 0;
+    return VotingId;
     }
     
 }
