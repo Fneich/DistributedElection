@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Blockchain;
+import com.google.gson.Gson;
 import java.util.UUID;
 /**
  *
@@ -45,8 +46,14 @@ public class Voter implements IVoter{
         this.LastName = LastName;
     }
     
-    
-    
+    public static Voter fromJson(String message){
+    Gson g=new Gson();
+    return g.fromJson(message, Voter.class);
+    }
+     public  String toJson(){
+    Gson g=new Gson();
+    return g.toJson(this);
+    }
     
     
 }

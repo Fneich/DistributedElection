@@ -14,7 +14,7 @@ import com.google.gson.Gson;
 public class Message {
     public enum MessageKey
     {
-        Connect, Disconnect, Accept,Reject,PublicKey,Information;
+        Connect, Disconnect, Accept,Reject,PublicKey,Information,Regitration;
     }
      
      public enum MessageSide

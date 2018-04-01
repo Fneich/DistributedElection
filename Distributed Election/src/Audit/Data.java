@@ -8,6 +8,7 @@ package Audit;
 import static Audit.Data.CitizensList;
 import Blockchain.ICitizen;
 import Blockchain.Citizen;
+import Blockchain.Voter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -55,8 +56,26 @@ public class Data {
        int x = 1000000001;
        for(Citizen c:CitizensList){
        c.setVoterId(x);
-       c.setVoted(Boolean.TRUE);
+       c.setVoted(Boolean.FALSE);
        x++;
        }
    }
+   
+   
+   public static int getVotingId(Voter voter){
+        Citizen citizen=null;
+       for(Citizen c:CitizensList){
+       if(c.getId()==voter.getUuid())
+       {
+           citizen = c;
+           break;
+       }
+       }
+       if(citizen!=null && citizen.getFirstName()==voter.getFirstName() && citizen.getLastName()==voter.getLastName())
+       {
+           return citizen.getVoterId();
+       }
+           return 0;
+        }
+   
 }
