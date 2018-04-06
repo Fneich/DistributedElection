@@ -7,6 +7,8 @@ package Blockchain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -16,46 +18,77 @@ import java.util.Objects;
 public class Block {
     
     private  ArrayList<Vote> Votes=new ArrayList<>();
-    private  int PreviousHash;
-    private int Hash;
-    
-    public Block(int previoushash){
-        this.PreviousHash=previoushash;
-        this.ReCalculateHash();
+    private String PreviousHash;
+    private String Hash;
+    private long timeStamp;
+    private int nonce;
+
+    public String getPreviousHash() {
+        return PreviousHash;
     }
-    private void ReCalculateHash(){
-        Object[] contents ={this.Votes.hashCode(),this.PreviousHash};
-      this.Hash = Arrays.hashCode(contents);
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public int getNonce() {
+        return nonce;
+    }
+    
+    public Block(String previoushash){
+        this.PreviousHash=previoushash;
+        this.timeStamp = new Date().getTime();
+        this.Hash = this.ReCalculateHash();
+        
+    }
+    public String ReCalculateHash(){
+        String calculatedhash = HashUtil.applySha256( 
+   this.PreviousHash + Long.toString(this.timeStamp) + Integer.toString(this.nonce)  
+                + this.Votes
+   );
+ return calculatedhash;
+    }
+
+    public void setVotes(ArrayList<Vote> Votes) {
+        this.Votes = Votes;
+    }
+
+    public void setPreviousHash(String PreviousHash) {
+        this.PreviousHash = PreviousHash;
+    }
+
+    public void setHash(String Hash) {
+        this.Hash = Hash;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public void setNonce(int nonce) {
+        this.nonce = nonce;
     }
     public void AddVote(Vote vote){
         this.Votes.add(vote);
-        this.ReCalculateHash();
+        this.Hash =this.ReCalculateHash();
     }
-    public int getHash(){return this.Hash;}
+    public String getHash(){return this.Hash;}
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.Votes);
-        hash = 37 * hash + this.PreviousHash;
-        hash = 37 * hash + this.Hash;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Block other = (Block) obj;
-        return true;
-    }
 
     public ArrayList<Vote> getVotes() {
         return Votes;
     }
     
+    public void mineBlock(int difficulty) {
+		String target = new String(new char[difficulty]).replace('\0', '0'); //Create a string with difficulty * "0" 
+		while(!this.Hash.substring( 0, difficulty).equals(target)) {
+			nonce ++;
+			this.Hash = this.ReCalculateHash();
+                       
+		}
+		System.out.println("Block Mined!!! : " + this.nonce);
+	}
+   
+    
 }
+
