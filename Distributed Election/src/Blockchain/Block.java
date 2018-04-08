@@ -65,7 +65,7 @@ public class Block {
      
     public String ReCalculateHash(){
         String calculatedhash = HashUtil.applySha256( 
-   this.PreviousHash + Long.toString(this.TimeStamp) + Integer.toString(this.Nonce)  
+        this.PreviousHash + Long.toString(this.TimeStamp) + Integer.toString(this.Nonce)  
                 + this.Votes
    );
  return calculatedhash;

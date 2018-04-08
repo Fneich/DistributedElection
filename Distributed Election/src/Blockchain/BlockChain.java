@@ -92,7 +92,7 @@ public class BlockChain {
                 if(!isBlockValid(nextBlock,currentBlock)){
                     return false;
                 }
-                if(!currentBlock.getHash().substring( 0, 2).equals(hashTarget)) {
+                if(!currentBlock.getHash().substring( 0, this.Difficulity).equals(hashTarget)) {
                     System.out.println("This block hasn't been mined");
                     return false;
                 }
@@ -103,6 +103,9 @@ public class BlockChain {
     }
     
     public  void addBlock(Block b) {
+        b.setPreviousHash(this.getLastBlock().getHash());
+        b.setHash( b.ReCalculateHash());
+        b.mineBlock(this.Difficulity);
         this.BlockChain.add(b);
         System.out.println(isBlockChainValid(this.BlockChain));
     }
