@@ -10,14 +10,16 @@ import java.util.UUID;
  *
  * @author Fneich
  */
-public class Voter implements IVoter{
+public class Voter {
     private UUID Id ;
+    private String Password; 
     private String FirstName;
     private String LastName;
     
 
-    public Voter(UUID Uuid, String FirstName, String LastName) {
+    public Voter(UUID Uuid,String password ,String FirstName, String LastName) {
         this.Id = Uuid;
+        this.Password = password;
         this.FirstName = FirstName;
         this.LastName = LastName;
     }
@@ -45,6 +47,14 @@ public class Voter implements IVoter{
     public void setLastName(String LastName) {
         this.LastName = LastName;
     }
+
+    public String getPassword() {
+        return Password;
+    }
+
+    public void setPassword(String Password) {
+        this.Password = Password;
+    }
     
     public static Voter fromJson(String message){
     Gson g=new Gson();
@@ -55,10 +65,6 @@ public class Voter implements IVoter{
     return g.toJson(this);
     }
 
-    @Override
-    public String toString() {
-        return "Voter{" + "Id=" + Id + ", FirstName=" + FirstName + ", LastName=" + LastName + '}';
-    }
-    
+  
     
 }

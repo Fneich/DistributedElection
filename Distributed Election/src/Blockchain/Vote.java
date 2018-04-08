@@ -38,13 +38,7 @@ this.Elect=elect;
     
   
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 17 * hash + Objects.hashCode(this.VoteId);
-        hash = 17 * hash + Objects.hashCode(this.Elect);
-        return hash;
-    }
+
 
     @Override
     public boolean equals(Object obj) {

@@ -12,8 +12,9 @@ import java.util.UUID;
  *
  * @author Fneich
  */
-public class Citizen implements ICitizen {
+public class Citizen  {
     private UUID Id ;
+    private String Password;
     private String FirstName;
     private String LastName;
     private Date BirthDate;
@@ -22,8 +23,9 @@ public class Citizen implements ICitizen {
     private Boolean CanVoted;
     private Boolean Voted;
 
-    public Citizen(UUID Id, String FirstName, String LastName, Date BirthDate, int PostalCode) {
+    public Citizen(UUID Id,String password, String FirstName, String LastName, Date BirthDate, int PostalCode) {
         this.Id = Id;
+        this.Password=password;
         this.FirstName = FirstName;
         this.LastName = LastName;
         this.BirthDate = BirthDate;
@@ -71,10 +73,17 @@ public class Citizen implements ICitizen {
     public int getVoterId() {
         return VoterId;
     }
-
+ public String getPassword() {
+        return Password;
+    }
     public void setId(UUID Id) {
         this.Id = Id;
     }
+
+    public void setPassword(String Password) {
+        this.Password = Password;
+    }
+    
 
     public void setFirstName(String FirstName) {
         this.FirstName = FirstName;
@@ -96,7 +105,7 @@ public class Citizen implements ICitizen {
         this.VoterId = VoterId;
     }
 
-    @Override
+   
     public Boolean CanVoting(Voter voter) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
         Boolean result = false;
@@ -106,7 +115,7 @@ public class Citizen implements ICitizen {
         return result;
     }
 
-    @Override
+  
     public int VotingRegister(Voter voter) {
         int result=0;
         if(this.CanVoting(voter)){          

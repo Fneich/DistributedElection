@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package Voter;
-import Blockchain.IVoter;
+
 import Blockchain.Voter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

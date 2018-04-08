@@ -34,7 +34,7 @@ public class VoterProgram {
          
          while(true){
     try{
-        Voter voter = new Voter(UUID.randomUUID(),"scfd","kdkdd");
+        Voter voter = new Voter(UUID.randomUUID(),"","scfd","kdkdd");
        VoterRegistrationRepository vr = new VoterRegistrationRepository(voter);
        vr.getVotingId();
        break;
