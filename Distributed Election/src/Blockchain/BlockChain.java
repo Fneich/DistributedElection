@@ -70,29 +70,34 @@ public class BlockChain {
     
     
     public  boolean isBlockValid(Block block,Block previousBlock) {
-        
+        if(block != null && previousBlock !=null){
+            if(block.getPreviousHash()==null || !block.getPreviousHash().equals(previousBlock.getHash())){
+                return false;
+            }
+            if(block.getHash()==null || !block.ReCalculateHash().equals(previousBlock.getHash())){
+                return false;
+            }
+        }
         return false;
     }    
     
     
     public  boolean isBlockChainValid(List blockChain) {
+        if(!this.isFirstBlockValid()){return false;}
         if (blockChain.size() > 1) {
-        for (int i = 1; i <= blockChain.size()-1; i++) {
-            Block currentBlock = (Block)blockChain.get(i-1);
-            Block nextBlock = (Block)blockChain.get(i);
-            String hashTarget = new String(new char[2]).replace('\0', '0');
-            if (!(currentBlock.getHash().equals(currentBlock.ReCalculateHash()))) {
-                return false;
-            }
-            if (!(nextBlock.getPreviousHash().equals(currentBlock.getHash()))) {
-                 return false;
-            }
-            if(!currentBlock.getHash().substring( 0, 2).equals(hashTarget)) {
-                System.out.println("This block hasn't been mined");
-                return false;
-            }
+            for (int i = 1; i <= blockChain.size()-1; i++) {
+                Block currentBlock = (Block)blockChain.get(i-1);
+                Block nextBlock = (Block)blockChain.get(i);
+                String hashTarget = new String(new char[2]).replace('\0', '0');
+                if(!isBlockValid(nextBlock,currentBlock)){
+                    return false;
+                }
+                if(!currentBlock.getHash().substring( 0, 2).equals(hashTarget)) {
+                    System.out.println("This block hasn't been mined");
+                    return false;
+                }
    
-        }
+            }
         }   
         return true;
     }
