@@ -38,7 +38,41 @@ public class BlockChain {
         this.Difficulity = Difficulity;
     }
     
-
+    public Block getFirstBlock(){
+        if(this.BlockChain.size()>0){
+            return this.BlockChain.get(0);
+        }
+        else{return null;}
+    }
+    
+    public Block getLastBlock(){
+        int Count=this.BlockChain.size();
+        if(Count>0){
+            return this.BlockChain.get(Count-1);
+        }
+        else{return null;}   
+    }
+    
+    
+    public boolean isFirstBlockValid(){
+        Block FirstBlock=this.BlockChain.get(0);
+        if(FirstBlock==null){
+        return false;
+        }
+        if(FirstBlock.getPreviousHash()!=null){
+            return false;
+        }
+        if(FirstBlock.getHash()==null ||  !FirstBlock.getHash().equals(FirstBlock.ReCalculateHash())){
+            return false;
+        }
+        return true;
+    }
+    
+    
+    public  boolean isBlockValid(Block block,Block previousBlock) {
+        
+        return false;
+    }    
     
     
     public  boolean isBlockChainValid(List blockChain) {
