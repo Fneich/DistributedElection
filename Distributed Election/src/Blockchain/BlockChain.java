@@ -88,7 +88,7 @@ public class BlockChain {
             for (int i = 1; i <= blockChain.size()-1; i++) {
                 Block currentBlock = (Block)blockChain.get(i-1);
                 Block nextBlock = (Block)blockChain.get(i);
-                String hashTarget = new String(new char[2]).replace('\0', '0');
+                String hashTarget = new String(new char[this.Difficulity]).replace('\0', '0');
                 if(!isBlockValid(nextBlock,currentBlock)){
                     return false;
                 }
