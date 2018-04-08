@@ -17,33 +17,55 @@ import java.util.Objects;
  */
 public class Block {
     
-    private  ArrayList<Vote> Votes=new ArrayList<>();
+    private  ArrayList<Vote> Votes;
     private String PreviousHash;
     private String Hash;
-    private long timeStamp;
-    private int nonce;
+    private long TimeStamp;
+    private int Nonce;
 
     public String getPreviousHash() {
         return PreviousHash;
     }
 
     public long getTimeStamp() {
-        return timeStamp;
+        return TimeStamp;
     }
 
     public int getNonce() {
-        return nonce;
+        return Nonce;
     }
     
     public Block(String previoushash){
+        this.Votes=new ArrayList<>();
         this.PreviousHash=previoushash;
-        this.timeStamp = new Date().getTime();
+        this.TimeStamp = new Date().getTime();
         this.Hash = this.ReCalculateHash();
         
     }
+    public Block(String previoushash,long timeStamp){
+        this.Votes=new ArrayList<>();
+        this.PreviousHash=previoushash;
+        this.TimeStamp = timeStamp;
+        this.Hash = this.ReCalculateHash();
+        
+    }
+     public Block(ArrayList<Vote> votes,String previoushash){
+        this.Votes=votes;
+         this.PreviousHash=previoushash;
+        this.TimeStamp = new Date().getTime();
+        this.Hash = this.ReCalculateHash(); 
+    }
+     
+      public Block(ArrayList<Vote> votes,String previoushash,long timeStamp){
+        this.Votes=votes;
+         this.PreviousHash=previoushash;
+        this.TimeStamp = timeStamp;
+        this.Hash = this.ReCalculateHash(); 
+    }
+     
     public String ReCalculateHash(){
         String calculatedhash = HashUtil.applySha256( 
-   this.PreviousHash + Long.toString(this.timeStamp) + Integer.toString(this.nonce)  
+   this.PreviousHash + Long.toString(this.TimeStamp) + Integer.toString(this.Nonce)  
                 + this.Votes
    );
  return calculatedhash;
@@ -62,11 +84,11 @@ public class Block {
     }
 
     public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
+        this.TimeStamp = timeStamp;
     }
 
     public void setNonce(int nonce) {
-        this.nonce = nonce;
+        this.Nonce = nonce;
     }
     public void AddVote(Vote vote){
         this.Votes.add(vote);
@@ -82,11 +104,11 @@ public class Block {
     public void mineBlock(int difficulty) {
 		String target = new String(new char[difficulty]).replace('\0', '0'); //Create a string with difficulty * "0" 
 		while(!this.Hash.substring( 0, difficulty).equals(target)) {
-			nonce ++;
+			Nonce ++;
 			this.Hash = this.ReCalculateHash();
                        
 		}
-		System.out.println("Block Mined!!! : " + this.nonce);
+		System.out.println("Block Mined!!! : " + this.Nonce);
 	}
    
     
