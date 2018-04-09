@@ -116,8 +116,7 @@ public class Block {
 		String target = new String(new char[difficulty]).replace('\0', '0'); //Create a string with difficulty * "0" 
 		while(!this.Hash.substring( 0, difficulty).equals(target)) {
 			Nonce ++;
-			this.Hash = this.ReCalculateHash();
-                       
+			this.Hash = this.ReCalculateHash();                       
 		}
 		System.out.println("Block Mined!!! : " + this.Nonce);
 	}

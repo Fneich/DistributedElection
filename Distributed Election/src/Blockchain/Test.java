@@ -32,7 +32,7 @@ public class Test {
      Block b2 = new Block(v3,v4,v5);
      Block b3 = new Block(v6,v7);
      
-     BlockChain BCH = new BlockChain(1,b1,b2,b3);
+     BlockChain BCH = new BlockChain(4,b1,b2,b3);
      System.out.println("Done !!");
      
      

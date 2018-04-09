@@ -74,26 +74,30 @@ public class BlockChain {
     public boolean isFirstBlockValid(){
         Block FirstBlock=this.Blocks.get(0);
         if(FirstBlock==null){
+            
         return false;
         }
         if(FirstBlock.getPreviousHash()!=null){
+           
             return false;
         }
         if(FirstBlock.getHash()==null ||  !FirstBlock.getHash().equals(FirstBlock.ReCalculateHash())){
+           
             return false;
         }
         return true;
     }
     
     
-    public  boolean isBlockValid(Block block,Block previousBlock) {
+    public  boolean isBlockValid(Block previousBlock,Block block) {
         if(block != null && previousBlock !=null){
             if(block.getPreviousHash()==null || !block.getPreviousHash().equals(previousBlock.getHash())){
                 return false;
             }
-            if(block.getHash()==null || !block.ReCalculateHash().equals(previousBlock.getHash())){
+            if(block.getHash()==null || !block.ReCalculateHash().equals(block.getHash())){
                 return false;
             }
+            return true;
         }
         return false;
     }    
@@ -103,14 +107,13 @@ public class BlockChain {
         if(!this.isFirstBlockValid()){return false;}
         if (blockChain.size() > 1) {
             for (int i = 1; i <= blockChain.size()-1; i++) {
-                Block currentBlock = (Block)blockChain.get(i-1);
-                Block nextBlock = (Block)blockChain.get(i);
+                Block previousBlock = (Block)blockChain.get(i-1);
+                Block currentBlock = (Block)blockChain.get(i);
                 String hashTarget = new String(new char[this.Difficulity]).replace('\0', '0');
-                if(!isBlockValid(nextBlock,currentBlock)){
+                if(!isBlockValid(previousBlock,currentBlock)){
                     return false;
                 }
                 if(!currentBlock.getHash().substring( 0, this.Difficulity).equals(hashTarget)) {
-                    System.out.println("This block hasn't been mined");
                     return false;
                 }
    
@@ -140,7 +143,7 @@ public class BlockChain {
     public boolean createGenesisBlock(Block GenesisBlock){
         if(this.BlockChainIsEmpty())
         {
-            GenesisBlock.setPreviousHash("0");
+            GenesisBlock.setPreviousHash(null);
             GenesisBlock.setHash(GenesisBlock.ReCalculateHash());
             GenesisBlock.mineBlock(this.Difficulity);
             this.Blocks.add(GenesisBlock);
