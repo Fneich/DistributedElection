@@ -50,19 +50,15 @@ public class Data {
    }
    
 
-   public static void GenerateVoterId()
-   {
-       
-       int x = 1000000001;
+   public static void GenerateVoterId(int ElectionId)
+   {     
        for(Citizen c:CitizensList){
-       c.setVoterId(x);
-       c.setVoted(Boolean.FALSE);
-       x++;
+           c.setVoterId();
        }
    }
    
    
-   public static int getVotingId(Voter voter){
+   public static String getVotingId(Voter voter){
         Citizen citizen=null;
        for(Citizen c:CitizensList){
        if(c.getId().equals(voter.getUuid()))
@@ -77,7 +73,7 @@ public class Data {
            System.out.println(citizen.getVoterId());
            return citizen.getVoterId();
        }
-           return 0;
+           return null;
         }
    
 }

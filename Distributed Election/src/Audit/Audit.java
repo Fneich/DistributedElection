@@ -83,7 +83,7 @@ public class Audit implements Runnable{
       Message YourInfo = Message.fromJson(m);
       String info=AE.decryptText(YourInfo.getValue());
       Voter v =Voter.fromJson(info); 
-      int votingid =Data.getVotingId(v);
+      String votingid =Data.getVotingId(v);
       System.out.println(votingid );
       m = socketReader.readLine();
       Message MyKey = Message.fromJson(m);

@@ -49,7 +49,7 @@ public class VoterRegistrationRepository {
         this.voter = voter;
     }
     
-    public int getVotingId() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException{
+    public String getVotingId() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException{
     Socket socket = new Socket("localhost", 12900);
     System.out.println("Started client  socket at " + socket.getLocalSocketAddress());
     BufferedReader socketReader = new BufferedReader(new InputStreamReader(
@@ -88,9 +88,8 @@ public class VoterRegistrationRepository {
     socketWriter.flush(); 
     String vid = socketReader.readLine(); 
     Message votingMessageid = Message.fromJson(vid);
-    int VotingId =Integer.parseInt( AE2.decryptText(votingMessageid.getValue()));
-    socket.close();
-    
+    String VotingId =AE2.decryptText(votingMessageid.getValue());
+    socket.close();   
     return VotingId;
     }
     

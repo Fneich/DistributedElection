@@ -19,9 +19,9 @@ public class Citizen  {
     private String LastName;
     private Date BirthDate;
     private int PostalCode;
-    private int VoterId;
-    private Boolean CanVoted;
-    private Boolean Voted;
+    private int ElectionId;
+    private String VoterId;
+
 
     public Citizen(UUID Id,String password, String FirstName, String LastName, Date BirthDate, int PostalCode) {
         this.Id = Id;
@@ -30,24 +30,7 @@ public class Citizen  {
         this.LastName = LastName;
         this.BirthDate = BirthDate;
         this.PostalCode = PostalCode;
-        this.Voted=false;
-        this.CanVoted=true;
-    }
-
-    public void setCanVoted(Boolean CanVoted) {
-        this.CanVoted = CanVoted;
-    }
-
-    public Boolean getCanVoted() {
-        return CanVoted;
-    }
-
-    public void setVoted(Boolean Voted) {
-        this.Voted = Voted;
-    }
-
-    public Boolean getVoted() {
-        return Voted;
+        
     }
 
     public UUID getId() {
@@ -70,7 +53,7 @@ public class Citizen  {
         return PostalCode;
     }
 
-    public int getVoterId() {
+    public String getVoterId() {
         return VoterId;
     }
  public String getPassword() {
@@ -101,34 +84,25 @@ public class Citizen  {
         this.PostalCode = PostalCode;
     }
 
-    public void setVoterId(int VoterId) {
-        this.VoterId = VoterId;
+    public int getElectionId() {
+        return ElectionId;
     }
 
-   
-    public Boolean CanVoting(Voter voter) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        Boolean result = false;
-        if(this.VoterId!=0 && voter.getUuid()==this.Id && voter.getFirstName()==this.FirstName && voter.getLastName()==this.LastName)
-        {result =true;}
-        
-        return result;
+    public void setElectionId(int ElectionId) {
+        this.ElectionId = ElectionId;
     }
 
-  
-    public int VotingRegister(Voter voter) {
-        int result=0;
-        if(this.CanVoting(voter)){          
-            result=this.VoterId;
-            this.setVoterId(0);
-        }
-        return result;
+    public void setVoterId() {
+        this.VoterId = HashUtil.applySha256(this.Id.toString() + this.FirstName+this.LastName+this.Password+this.BirthDate+ String.valueOf(this.PostalCode) + String.valueOf(this.ElectionId));
     }
 
-    @Override
-    public String toString() {
-        return "Citizen{" + "Id=" + Id + ", FirstName=" + FirstName + ", LastName=" + LastName + ", BirthDate=" + BirthDate + ", PostalCode=" + PostalCode + ", VoterId=" + VoterId + ", CanVoted=" + CanVoted + ", Voted=" + Voted + '}';
-    }
+
+
+
+
+
+
+
     
     
 }
