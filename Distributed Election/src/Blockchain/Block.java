@@ -62,6 +62,17 @@ public class Block {
         this.TimeStamp = timeStamp;
         this.Hash = this.ReCalculateHash(); 
     }
+      
+      
+       public Block(Vote ...votes){
+        this.Votes=new ArrayList<>();
+        for(Vote vote:votes){
+            this.Votes.add(vote);
+        }
+        this.TimeStamp = new Date().getTime();
+        this.Hash = this.ReCalculateHash(); 
+    } 
+    
      
     public String ReCalculateHash(){
         String calculatedhash = HashUtil.applySha256( 

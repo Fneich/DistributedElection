@@ -15,7 +15,9 @@ import java.util.List;
 public class Test {
    
      public static void main(String args[]){
-         
+       
+     
+     
      Elect e1 = new Elect(1,"Donald","Trump","Republican");
      Elect e2 = new Elect(2,"Hillary","Clinton","Democratic");
      Vote v1 = new Vote("2398hr9rh892u3",e1);
@@ -26,6 +28,13 @@ public class Test {
      Vote v6 = new Vote("239eyety",e1);
      Vote v7 = new Vote("23iutyjtyjr9rh892u3",e2);
      
-    
+     Block b1 = new Block(v1,v2);
+     Block b2 = new Block(v3,v4,v5);
+     Block b3 = new Block(v6,v7);
+     
+     BlockChain BCH = new BlockChain(1,b1,b2,b3);
+     System.out.println("Done !!");
+     
+     
     }
 }

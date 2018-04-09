@@ -14,16 +14,33 @@ import java.util.List;
  */
 public class BlockChain {
     
-     private List<Block> BlockChain;
+     private List<Block> Blocks;
      private int Difficulity;
 
     public BlockChain(int Difficulity) {
         this.Difficulity = Difficulity;
-        this.BlockChain = new ArrayList<Block>();
+        this.Blocks = new ArrayList<Block>();
+    }
+    
+     public BlockChain(int Difficulity,Block... blocks) {
+        this.Difficulity = Difficulity;
+        this.Blocks = new ArrayList<Block>();
+        int count=0;
+        for(Block block:blocks){
+            if(count==0){
+                this.createGenesisBlock(block);
+                count=1;
+            }
+            else
+            {
+                this.addBlock(block);
+            }
+        }
+        
     }
 
-    public List<Block> getBlockChain() {
-        return BlockChain;
+    public List<Block> getBlocks() {
+        return Blocks;
     }
 
     public int getDifficulity() {
@@ -31,7 +48,7 @@ public class BlockChain {
     }
 
     public void setBlockChain(List<Block> blockChain) {
-        this.BlockChain = blockChain;
+        this.Blocks = blockChain;
     }
 
     public void setDifficulity(int Difficulity) {
@@ -39,23 +56,23 @@ public class BlockChain {
     }
     
     public Block getFirstBlock(){
-        if(this.BlockChain.size()>0){
-            return this.BlockChain.get(0);
+        if(this.Blocks.size()>0){
+            return this.Blocks.get(0);
         }
         else{return null;}
     }
     
     public Block getLastBlock(){
-        int Count=this.BlockChain.size();
+        int Count=this.Blocks.size();
         if(Count>0){
-            return this.BlockChain.get(Count-1);
+            return this.Blocks.get(Count-1);
         }
         else{return null;}   
     }
     
     
     public boolean isFirstBlockValid(){
-        Block FirstBlock=this.BlockChain.get(0);
+        Block FirstBlock=this.Blocks.get(0);
         if(FirstBlock==null){
         return false;
         }
@@ -102,11 +119,35 @@ public class BlockChain {
         return true;
     }
     
+    public boolean BlockChainIsEmpty(){
+        if(this.Blocks.size()>0)
+        {
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+    
     public  void addBlock(Block b) {
         b.setPreviousHash(this.getLastBlock().getHash());
         b.setHash( b.ReCalculateHash());
         b.mineBlock(this.Difficulity);
-        this.BlockChain.add(b);
-        System.out.println(isBlockChainValid(this.BlockChain));
+        this.Blocks.add(b);
+        System.out.println(isBlockChainValid(this.Blocks));
     }
+    
+    public boolean createGenesisBlock(Block GenesisBlock){
+        if(this.BlockChainIsEmpty())
+        {
+            GenesisBlock.setPreviousHash("0");
+            GenesisBlock.setHash(GenesisBlock.ReCalculateHash());
+            GenesisBlock.mineBlock(this.Difficulity);
+            this.Blocks.add(GenesisBlock);
+            return true;     
+        }
+        else{return false;}
+    }
+    
+    
 }
