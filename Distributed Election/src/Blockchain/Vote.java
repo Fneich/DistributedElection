@@ -27,8 +27,8 @@ this.Elect=elect;
         return Elect;
     }
 
-    public void setVoteId(String VoteId) {
-        this.VoterId = VoteId;
+    public void setVoteId(String VoterId) {
+        this.VoterId = VoterId;
     }
 
     public void setElect(Elect Elect) {
