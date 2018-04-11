@@ -11,16 +11,16 @@ import java.util.Objects;
 
 public class Vote {
     
-private String VoteId;
+private String VoterId;
 private Elect Elect;
 
-public Vote(String voteId,Elect elect){
-this.VoteId=voteId;
+public Vote(String voterId,Elect elect){
+this.VoterId=voterId;
 this.Elect=elect;
 }
 
     public String getVoteId() {
-        return VoteId;
+        return VoterId;
     }
 
     public Elect getElect() {
@@ -28,7 +28,7 @@ this.Elect=elect;
     }
 
     public void setVoteId(String VoteId) {
-        this.VoteId = VoteId;
+        this.VoterId = VoteId;
     }
 
     public void setElect(Elect Elect) {
@@ -40,16 +40,6 @@ this.Elect=elect;
 
 
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Vote other = (Vote) obj;
-        return true;
-    }
+
     
 }
