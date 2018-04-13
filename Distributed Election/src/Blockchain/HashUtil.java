@@ -1,24 +1,15 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Blockchain;
 import java.security.MessageDigest;
-/**
- *
- * @author Fneich
- */
+
 public class HashUtil {
      //Applies Sha256 to a string and returns the result. 
  public static String applySha256(String input){
   
   try {
-   MessageDigest digest = MessageDigest.getInstance("SHA-256");
-         
+   MessageDigest digest = MessageDigest.getInstance("SHA-256");        
    //Applies sha256 to our input, 
-   byte[] hash = digest.digest(input.getBytes("UTF-8"));
-         
+   byte[] hash = digest.digest(input.getBytes("UTF-8"));        
    StringBuffer hexString = new StringBuffer(); // This will contain hash as hexidecimal
    for (int i = 0; i < hash.length; i++) {
     String hex = Integer.toHexString(0xff & hash[i]);
@@ -32,3 +23,4 @@ public class HashUtil {
   }
  }
 }
+
