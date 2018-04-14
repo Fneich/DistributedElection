@@ -12,27 +12,27 @@ import java.util.Objects;
 public class Vote {
     
 private String VoterId;
-private Elect Elect;
+private int ElectId;
 
-public Vote(String voterId,Elect elect){
+public Vote(String voterId,int electid){
 this.VoterId=voterId;
-this.Elect=elect;
+this.ElectId=electid;
 }
 
     public String getVoteId() {
         return VoterId;
     }
 
-    public Elect getElect() {
-        return Elect;
+    public int getElect() {
+        return ElectId;
     }
 
     public void setVoteId(String VoterId) {
         this.VoterId = VoterId;
     }
 
-    public void setElect(Elect Elect) {
-        this.Elect = Elect;
+    public void setElect(int electid) {
+        this.ElectId = electid;
     }
 
     

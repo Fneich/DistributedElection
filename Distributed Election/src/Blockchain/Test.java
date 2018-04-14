@@ -23,13 +23,13 @@ public class Test {
      
      Elect e1 = new Elect(1,"Donald","Trump","Republican");
      Elect e2 = new Elect(2,"Hillary","Clinton","Democratic");
-     Vote v1 = new Vote("2398hr9rh892u3",e1);
-     Vote v2 = new Vote("2398seffs892u3",e2);
-     Vote v3 = new Vote("2398hr9rh892u3",e2);
-     Vote v4 = new Vote("2sf892u3",e1);
-     Vote v5 = new Vote("2398hr9rh892u3",e1);
-     Vote v6 = new Vote("239eyety",e1);
-     Vote v7 = new Vote("23iutyjtyjr9rh892u3",e2);
+     Vote v1 = new Vote("2398hr9rh892u3",e1.getId());
+     Vote v2 = new Vote("2398seffs892u3",e2.getId());
+     Vote v3 = new Vote("2398hr9rh892u3",e2.getId());
+     Vote v4 = new Vote("2sf892u3",e1.getId());
+     Vote v5 = new Vote("2398hr9rh892u3",e1.getId());
+     Vote v6 = new Vote("239eyety",e1.getId());
+     Vote v7 = new Vote("23iutyjtyjr9rh892u3",e2.getId());
      
      Block b1 = new Block(v1,v2);
      Block b2 = new Block(v3,v4,v5);
@@ -38,7 +38,9 @@ public class Test {
      BlockChain BCH = new BlockChain(1,b1,b2,b3);
      System.out.println("Done !!");
 
-    System.out.println(HashUtil.applySha256(""));
+    System.out.println(BCH.toString());
+    
+    
      
     }
 }

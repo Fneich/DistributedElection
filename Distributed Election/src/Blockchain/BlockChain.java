@@ -5,6 +5,7 @@
  */
 package Blockchain;
 
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -152,5 +153,9 @@ public class BlockChain {
         else{return false;}
     }
     
+    public String toString(){
+        
+        return (new Gson()).toJson(this);
+    }
     
 }

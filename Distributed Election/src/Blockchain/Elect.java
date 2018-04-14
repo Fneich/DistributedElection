@@ -5,6 +5,7 @@
  */
 package Blockchain;
 
+import com.google.gson.Gson;
 import java.util.Objects;
 
 /**
@@ -56,27 +57,12 @@ public class Elect {
         this.Party = Party;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + this.Id;
-        hash = 97 * hash + Objects.hashCode(this.FirstName);
-        hash = 97 * hash + Objects.hashCode(this.LastName);
-        hash = 97 * hash + Objects.hashCode(this.Party);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Elect other = (Elect) obj;
-        return true;
-    }
+ public String toString(){
+     Gson g =new Gson();
+     return g.toJson(this);
+     
+ }
+  
    
     
     
