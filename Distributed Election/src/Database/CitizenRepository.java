@@ -6,12 +6,14 @@
 package Database;
 
 import Blockchain.Citizen;
+import com.google.gson.Gson;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 /**
  *
@@ -24,25 +26,25 @@ public class CitizenRepository {
         MasterRepository<Citizen> mr = new MasterRepository<Citizen>(Citizen.class,"Citizen");
          return mr.getAll();
     }
-
+    
+    public  List<Citizen> Search(List<Parameter> parameters){       
+        
+        MasterRepository<Citizen> mr = new MasterRepository<Citizen>(Citizen.class,"Citizen");
+        return mr.getAll();
+    }
 
     public void Add(Citizen c) {
-       // MongoCollection<Document> collection = MongodbConnection.db.Database.getCollection(this.Table);
-        
-        //Document document1 = Document.parse(c.toJson());
-       // Document document = new Document("Id", c.getId())
-     // .append("Password", c.getPassword())          
-     // .append("FirstName", c.getFirstName())
-     // .append("LastName", c.getLastName()) 
-     // .append("BirthDate", c.getBirthDate()) 
-      //.append("PostalCode",c.getPostalCode()) 
-      //.append("by", "tutorials point");  
-      //collection.insertOne(document1);
        MasterRepository<Citizen> mr = new MasterRepository<Citizen>(Citizen.class,"Citizen");
        mr.Add(c);
     }
 
-   
-
+   public void Update(Citizen c) {
+       MasterRepository<Citizen> mr = new MasterRepository<Citizen>(Citizen.class,"Citizen");
+       mr.Update(c,c.getId().toString());
+    }
+ public void Delete(Citizen c){
+        MasterRepository<Citizen> mr = new MasterRepository<Citizen>(Citizen.class,"Citizen");      
+	mr.Delete(c.getId().toString());
+    }
     
 }
