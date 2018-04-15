@@ -7,6 +7,7 @@ package Database;
 
 import Blockchain.Citizen;
 import com.google.gson.Gson;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import java.util.ArrayList;
@@ -19,32 +20,10 @@ import org.bson.conversions.Bson;
  *
  * @author Fneich
  */
-public class CitizenRepository {
+public class CitizenRepository extends DocumentRepository<Citizen>{
 
-
-    public  List<Citizen> getAll(){       
-        MasterRepository<Citizen> mr = new MasterRepository<Citizen>(Citizen.class,"Citizen");
-         return mr.getAll();
-    }
-    
-    public  List<Citizen> Search(List<Parameter> parameters){       
-        
-        MasterRepository<Citizen> mr = new MasterRepository<Citizen>(Citizen.class,"Citizen");
-        return mr.getAll();
+    public CitizenRepository() {
+        super(Citizen.class, "Citizen");
     }
 
-    public void Add(Citizen c) {
-       MasterRepository<Citizen> mr = new MasterRepository<Citizen>(Citizen.class,"Citizen");
-       mr.Add(c);
-    }
-
-   public void Update(Citizen c) {
-       MasterRepository<Citizen> mr = new MasterRepository<Citizen>(Citizen.class,"Citizen");
-       mr.Update(c,c.getId().toString());
-    }
- public void Delete(Citizen c){
-        MasterRepository<Citizen> mr = new MasterRepository<Citizen>(Citizen.class,"Citizen");      
-	mr.Delete(c.getId().toString());
-    }
-    
 }

@@ -26,11 +26,7 @@ public class DatabaseRepository {
             System.out.println(df.format(dateobj));
        
       CitizenRepository CR = new CitizenRepository();
-      
-     
-      Citizen c = new Citizen(UUID.fromString("d7b903fc-5029-45e1-8dc0-3fa3181cd0ba"),"AFPO","Mohamad","Fneich",new Date(1990,11,8),1003);
-      CR.Delete(c);
-      System.out.println(CR.getAll().size());
+      System.out.println(CR.Search(new Parameter("PostalCode",1029)).size());
       Date dateobj2 = new Date();
       System.out.println(df.format(dateobj2));
    } 

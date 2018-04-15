@@ -11,9 +11,9 @@ package Database;
  */
 public class Parameter {
     private String Key;
-    private String Value;
+    private Object Value;
 
-    public Parameter(String Key, String Value) {
+    public Parameter(String Key, Object Value) {
         this.Key = Key;
         this.Value = Value;
     }
@@ -22,7 +22,7 @@ public class Parameter {
         return Key;
     }
 
-    public String getValue() {
+    public Object getValue() {
         return Value;
     }
 

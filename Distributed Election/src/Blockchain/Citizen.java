@@ -5,6 +5,7 @@
  */
 package Blockchain;
 
+
 import com.google.gson.Gson;
 import java.util.Date;
 import java.util.UUID;
@@ -13,7 +14,7 @@ import java.util.UUID;
  *
  * @author Fneich
  */
-public class Citizen  {
+public class Citizen {
     private UUID Id ;
     private String Password;
     private String FirstName;
@@ -107,10 +108,4 @@ public class Citizen  {
     return g.toJson(this);
     }
 
-
-
-
-
-    
-    
 }
