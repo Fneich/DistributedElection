@@ -16,7 +16,7 @@ import java.util.UUID;
  */
 public class Citizen {
     private UUID Id ;
-    private String Password;
+    private int Password;
     private String FirstName;
     private String LastName;
     private Date BirthDate;
@@ -25,7 +25,7 @@ public class Citizen {
     private String VoterId;
 
 
-    public Citizen(UUID Id,String password, String FirstName, String LastName, Date BirthDate, int PostalCode) {
+    public Citizen(UUID Id,int password, String FirstName, String LastName, Date BirthDate, int PostalCode) {
         this.Id = Id;
         this.Password=password;
         this.FirstName = FirstName;
@@ -58,14 +58,14 @@ public class Citizen {
     public String getVoterId() {
         return VoterId;
     }
- public String getPassword() {
+ public int getPassword() {
         return Password;
     }
     public void setId(UUID Id) {
         this.Id = Id;
     }
 
-    public void setPassword(String Password) {
+    public void setPassword(int Password) {
         this.Password = Password;
     }
     

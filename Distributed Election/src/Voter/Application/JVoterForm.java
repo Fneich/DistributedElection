@@ -145,7 +145,7 @@ public class JVoterForm extends javax.swing.JFrame {
 
     private void BtnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnRegisterActionPerformed
         // TODO add your handling code here:
-       Voter voter = new Voter(UUID.fromString(txtId.getText()),txtPassword.getText(),txtFirstName.getText(),txtLastName.getText());
+       Voter voter = new Voter(UUID.fromString(txtId.getText()),Integer.parseInt(txtPassword.getText()),txtFirstName.getText(),txtLastName.getText());
        VoterRegistrationRepository VRR = new VoterRegistrationRepository(voter);
         try {
             txtVotingId.setText(VRR.getVotingId());

@@ -68,7 +68,7 @@ public class Data {
        }
        }
        System.out.println(citizen.toString());
-       if(citizen!=null && citizen.getPassword().equals(voter.getPassword()) && citizen.getFirstName().equals(voter.getFirstName()) && citizen.getLastName().equals(voter.getLastName()))
+       if(citizen!=null && citizen.getPassword()==voter.getPassword() && citizen.getFirstName().equals(voter.getFirstName()) && citizen.getLastName().equals(voter.getLastName()))
        {
            System.out.println(citizen.getVoterId());
            return citizen.getVoterId();

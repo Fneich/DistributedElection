@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.UUID;
 import org.bson.Document;
 
@@ -27,7 +28,13 @@ public class DatabaseRepository {
             System.out.println(df.format(dateobj));
        
             CitizenRepository CR = new CitizenRepository();
-            System.out.println(CR.Search(new Parameter("PostalCode",1029)).size());
+            Random rand = new Random();   
+            for(Citizen c : CR.getAll()){
+                int randomNum = rand.nextInt(900000) + 100000;
+                c.setPassword(randomNum);
+                CR.Update(c, c.getId().toString());
+                System.out.println("Password of Citzen(id=" + c.getId() + ") has generated");
+            }
             
             Date dateobj2 = new Date();
             System.out.println(df.format(dateobj2));

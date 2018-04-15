@@ -12,12 +12,12 @@ import java.util.UUID;
  */
 public class Voter {
     private UUID Id ;
-    private String Password; 
+    private int Password; 
     private String FirstName;
     private String LastName;
     
 
-    public Voter(UUID Uuid,String password ,String FirstName, String LastName) {
+    public Voter(UUID Uuid,int password ,String FirstName, String LastName) {
         this.Id = Uuid;
         this.Password = password;
         this.FirstName = FirstName;
@@ -48,11 +48,11 @@ public class Voter {
         this.LastName = LastName;
     }
 
-    public String getPassword() {
+    public int getPassword() {
         return Password;
     }
 
-    public void setPassword(String Password) {
+    public void setPassword(int Password) {
         this.Password = Password;
     }
     
