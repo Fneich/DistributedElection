@@ -21,13 +21,15 @@ import org.bson.Document;
 
 public class DatabaseRepository {
        public static void main( String args[] ) {  
-           DateFormat df = new SimpleDateFormat("HH:mm:ss");
+            DateFormat df = new SimpleDateFormat("HH:mm:ss");
+            
             Date dateobj = new Date();
             System.out.println(df.format(dateobj));
        
-      CitizenRepository CR = new CitizenRepository();
-      System.out.println(CR.Search(new Parameter("PostalCode",1029)).size());
-      Date dateobj2 = new Date();
-      System.out.println(df.format(dateobj2));
+            CitizenRepository CR = new CitizenRepository();
+            System.out.println(CR.Search(new Parameter("PostalCode",1029)).size());
+            
+            Date dateobj2 = new Date();
+            System.out.println(df.format(dateobj2));
    } 
 }
