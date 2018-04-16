@@ -21,7 +21,6 @@ public class Citizen {
     private String LastName;
     private Date BirthDate;
     private int PostalCode;
-    private int ElectionId;
     private String VoterId;
 
 
@@ -86,16 +85,8 @@ public class Citizen {
         this.PostalCode = PostalCode;
     }
 
-    public int getElectionId() {
-        return ElectionId;
-    }
-
-    public void setElectionId(int ElectionId) {
-        this.ElectionId = ElectionId;
-    }
-
-    public void setVoterId() {
-        this.VoterId = HashUtil.applySha256(this.Id.toString() + this.FirstName+this.LastName+this.Password+this.BirthDate+ String.valueOf(this.PostalCode) + String.valueOf(this.ElectionId));
+    public void setVoterId(String id) {
+        this.VoterId = id;
     }
 
 

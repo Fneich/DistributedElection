@@ -8,7 +8,9 @@ package Audit;
 import static Audit.Data.CitizensList;
 
 import Blockchain.Citizen;
+import Blockchain.HashUtil;
 import Blockchain.Voter;
+import Database.CitizenRepository;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -26,34 +28,32 @@ import java.io.Reader;
 import java.lang.ProcessBuilder.Redirect.Type;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 
 public class Data {
     
-   public static ArrayList<Citizen> CitizensList = new ArrayList<Citizen>();
+   public static List<Citizen> CitizensList = new ArrayList<Citizen>();
+   public static String ElectionId="Election_2018";
    
    public static void LoadCitizensData() throws FileNotFoundException{
-            Reader reader = new FileReader("Citizens.json");
-            Gson gson=new GsonBuilder().setDateFormat("MMM dd, yyyy").create();
-           java.lang.reflect.Type listType = new TypeToken<ArrayList<Citizen>>(){}.getType();
-            CitizensList= gson.fromJson(reader,listType);
+       CitizenRepository CR = new CitizenRepository();
+       CitizensList = CR.getAll();
    }
    public static void SaveCitizensData() throws FileNotFoundException, IOException{
-
-   Gson gson=new Gson();
-   String data=gson.toJson(CitizensList);
-   BufferedWriter out = new BufferedWriter(new FileWriter("Citizens.json"));
-    out.write(data);
-    out.flush();
-    out.close();
+       CitizenRepository CR = new CitizenRepository();
+       for(Citizen c:CitizensList){
+           CR.Update(c, c.getId().toString());
+       }
    }
    
 
-   public static void GenerateVoterId(int ElectionId)
+   public static void GenerateVoterId()
    {     
        for(Citizen c:CitizensList){
-           c.setVoterId();
+           String id= HashUtil.applySha256(Data.ElectionId + c.getId().toString() + c.getFirstName()+c.getLastName()+c.getPassword()+c.getBirthDate()+ String.valueOf(c.getPostalCode()));
+           c.setVoterId(id);
        }
    }
    

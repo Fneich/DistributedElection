@@ -5,6 +5,7 @@
  */
 package Blockchain;
 
+import Database.BlockChainRepository;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,11 +36,15 @@ public class Test {
      Block b2 = new Block(v3,v4,v5);
      Block b3 = new Block(v6,v7);
 
-     BlockChain BCH = new BlockChain(1,b1,b2,b3);
+     BlockChain BCH = new BlockChain(5,b1,b2,b3);
      System.out.println("Done !!");
 
     System.out.println(BCH.toString());
     
+    //BlockChainRepository BCR =new BlockChainRepository();
+    //BCR.Add(b1);
+    //BCR.Add(b2);
+   // BCR.Add(b3);
     
      
     }

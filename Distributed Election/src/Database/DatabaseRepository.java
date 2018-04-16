@@ -6,6 +6,7 @@
 package Database;
 
 import Blockchain.Citizen;
+import Blockchain.Elect;
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -27,16 +28,16 @@ public class DatabaseRepository {
             Date dateobj = new Date();
             System.out.println(df.format(dateobj));
        
-            CitizenRepository CR = new CitizenRepository();
-            Random rand = new Random();   
-            for(Citizen c : CR.getAll()){
-                int randomNum = rand.nextInt(900000) + 100000;
-                c.setPassword(randomNum);
-                CR.Update(c, c.getId().toString());
-                System.out.println("Password of Citzen(id=" + c.getId() + ") has generated");
-            }
-            
+            ElectRepository ER = new ElectRepository();
+         
+            Elect e1=new Elect(2,"Hillary","Clinton","Democratic");
+            Elect e2=new Elect(3,"Gary","Johnson","Libertarian");
+            Elect e3=new Elect(4,"Jill","Stein","Green");
+            Elect e4=new Elect(5,"Darrell","Castle","Constitution");
+            ER.Add(e1);ER.Add(e2);ER.Add(e3);ER.Add(e4);
             Date dateobj2 = new Date();
             System.out.println(df.format(dateobj2));
+            
    } 
 }
+ 

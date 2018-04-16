@@ -14,9 +14,10 @@ import java.io.IOException;
 public class AuditProgram {
     public static void main(String args[]) throws IOException{
         Data.LoadCitizensData();
-        AuditMaster auditMaster = new AuditMaster();
-        Thread threadAuditMaster = new Thread(auditMaster);
-        threadAuditMaster.start();
-
+        //AuditMaster auditMaster = new AuditMaster();
+        //Thread threadAuditMaster = new Thread(auditMaster);
+        //threadAuditMaster.start();
+        Data.GenerateVoterId();
+        Data.SaveCitizensData();
     }
 }
