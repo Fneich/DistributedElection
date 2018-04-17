@@ -55,7 +55,7 @@ public class Audit implements Runnable{
         Message message = Message.fromJson(inMsg);
         
         if(message.getSide()==MessageSide.Voter && message.getKey()==MessageKey.Regitration){VoterService(message);}
-
+        if(message.getSide()==MessageSide.Polling && message.getKey()==MessageKey.Information){VoterService(message);}
       
       socket.close();
       this.thread.join();

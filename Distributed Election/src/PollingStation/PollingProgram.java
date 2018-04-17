@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Audit;
+package PollingStation;
 
 import java.io.IOException;
 
@@ -11,13 +11,10 @@ import java.io.IOException;
  *
  * @author Fneich
  */
-public class AuditProgram {
+public class PollingProgram {
+    public static int Status=0;
     public static void main(String args[]) throws IOException{
-        Data.LoadCitizensData();
-        AuditMaster auditMaster = new AuditMaster();
-        Thread threadAuditMaster = new Thread(auditMaster);
-        threadAuditMaster.start();
-        //Data.GenerateVoterId();
-        //Data.SaveCitizensData();
+        
     }
+    
 }
