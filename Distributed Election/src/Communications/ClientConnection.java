@@ -24,13 +24,13 @@ public class ClientConnection {
     private int Port;
     private Socket ActiveSocket;
     private Boolean Opened;
-    private Message.MessageSide messageSide;
+
     
-    public ClientConnection( String IP,int port,Message.MessageSide messageside) throws UnknownHostException, IOException {
+    public ClientConnection( String IP,int port) throws UnknownHostException, IOException {
         this.IP = IP;
         this.Port=port;
         this.Opened=false;
-        this.messageSide=messageside;
+
     }
 
 
@@ -94,10 +94,12 @@ public class ClientConnection {
         return null;
     }
     public void SendMessage(Message message) throws IOException{
-        BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(this.ActiveSocket.getOutputStream()));
+        Socket socket = new Socket(this.IP, this.Port);
+        BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
         socketWriter.write(message.toJson());
         socketWriter.newLine();
         socketWriter.flush();
+        socket.close();
     }
 
 }

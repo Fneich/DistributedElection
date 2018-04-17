@@ -8,6 +8,7 @@ package Audit;
 import Blockchain.Voter;
 import Communications.ClientConnection;
 import Communications.Connection;
+
 import Communications.Message;
 import Communications.Message.MessageSide;
 import Encryption.AsymetricEncryption;
@@ -33,7 +34,7 @@ import javax.crypto.NoSuchPaddingException;
  * @author Fneich
  */
 public class AuditVoter implements Runnable {
-     private ClientConnection connection;
+     private Connection connection;
     private Thread thread;
      private  BufferedReader socketReader = null;
      private BufferedWriter socketWriter = null;
@@ -65,8 +66,8 @@ public class AuditVoter implements Runnable {
     }
     }
 
-    public AuditVoter(String ip,int port) throws IOException {
-        this.connection = new ClientConnection(ip,port,MessageSide.Voter);
+    public AuditVoter(Connection connection) throws IOException {
+        this.connection = connection;
         this.thread =new Thread(this);
         this.thread.start();
     }

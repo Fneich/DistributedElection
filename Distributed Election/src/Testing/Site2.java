@@ -6,7 +6,6 @@
 package Testing;
 
 import Communications.ClientConnection;
-import Communications.Connection;
 import Communications.Message;
 import Communications.Message.MessageSide;
 import Communications.ServerConnection;
@@ -19,14 +18,9 @@ import java.io.IOException;
 public class Site2 {
      public static void main(String args[]) throws IOException{
        
-         //ServerConnection c = new ServerConnection("localhost",MessageSide.Voter);
-         Connection c = new Connection("localhost",10000,MessageSide.Voter);
-        c.OpenConnection();
-        System.out.println(c.getPort());
-         while(true){
-        Message message=c.WaitMessage();
-        System.out.println(message.getValue());
-         }
-
+       SocketSender ss = new SocketSender(3000);
+       SocketListener sl =new SocketListener(2000);
+       System.out.println("Site2");
+          System.out.println("------------------------------------");
     }
 }

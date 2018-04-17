@@ -25,15 +25,20 @@ public class ServerConnection {
     private ServerSocket _ServerSocket;
     private Socket ActiveSocket;
     private Boolean Opened;
-    private Message.MessageSide messageSide;
 
-    public ServerConnection( String IP,Message.MessageSide messageside) throws UnknownHostException, IOException {
+
+    public ServerConnection( String IP) throws UnknownHostException, IOException {
         this.IP = IP;
         this.Opened=false;
-        this.messageSide=messageside;
+        this.Port=0;
     }
 
+ public ServerConnection( String IP,int port) throws UnknownHostException, IOException {
+        this.IP = IP;
+        this.Opened=false;
 
+        this.Port=port;
+    }
 
     public String getIP() {
         return IP;
@@ -75,7 +80,7 @@ public class ServerConnection {
 
     public void OpenConnection() throws UnknownHostException, IOException{
         if(!this.Opened){
-            this._ServerSocket = new ServerSocket(10000, 100,InetAddress.getByName(this.getIP()));
+            this._ServerSocket = new ServerSocket(this.Port, 100,InetAddress.getByName(this.getIP()));
             this.Port=this._ServerSocket.getLocalPort();
             this.Opened=true;
         }
@@ -109,6 +114,7 @@ public class ServerConnection {
         socketWriter.write(message.toJson());
         socketWriter.newLine();
         socketWriter.flush();
+        socket.close();
     }
 
 

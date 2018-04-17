@@ -5,143 +5,68 @@
  */
 package Communications;
 
-import Communications.Message.MessageKey;
 import Communications.Message.MessageSide;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.InetAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
-
 
 /**
  *
  * @author Fneich
  */
 public class Connection {
+    
+    private String Id;
     private String IP;
-    private int Port;
-    private int MasterPort;
-    private ServerSocket _ServerSocket;
-    private Socket ActiveSocket;
-    private Boolean Opened;
-    private MessageSide messageSide;
+    private MessageSide Side;
+    private ServerConnection ReceverConnection;
+    private ClientConnection SenderConnection;
 
-    public Connection( String IP,int port,MessageSide messageside) throws UnknownHostException, IOException {
-       
-        this.IP = IP;
-        this.Port=port;
-        this.Opened=false;
-        this.messageSide=messageside;
+    public Connection(String Id,String ip, MessageSide Side, ServerConnection ReceverConnection, ClientConnection SenderConnection) {
+        this.Id = Id;
+        this.Side = Side;
+        this.ReceverConnection = ReceverConnection;
+        this.SenderConnection = SenderConnection;
+        this.IP=ip;
+    }
+ public Connection(String Id,String ip, MessageSide Side) throws IOException {
+     this.IP=ip;
+        this.Id = Id;
+        this.Side = Side;
+        this.ReceverConnection = new ServerConnection(this.IP);
+    }
+    public String getId() {
+        return Id;
     }
 
-    public void setMasterPort(int MasterPort) {
-        this.MasterPort = MasterPort;
+    public MessageSide getSide() {
+        return Side;
     }
 
-    public int getMasterPort() {
-        return MasterPort;
+    public ServerConnection getReceverConnection() {
+        return ReceverConnection;
     }
 
-
-
-    public String getIP() {
-        return IP;
+    public ClientConnection getSenderConnection() {
+        return SenderConnection;
     }
 
-    public int getPort() {
-        return Port;
+    public void setId(String Id) {
+        this.Id = Id;
     }
 
-    public ServerSocket getServerSocket() {
-        return _ServerSocket;
+    public void setSide(MessageSide Side) {
+        this.Side = Side;
     }
 
-    public Socket getActiveSocket() {
-        return ActiveSocket;
+    public void setReceverConnection(ServerConnection ReceverConnection) {
+        this.ReceverConnection = ReceverConnection;
     }
 
-    public Boolean getOpened() {
-        return Opened;
-    }
-
-
-
-    public void setIP(String IP) {
-        this.IP = IP;
-    }
-
-    public void setPort(int Port) {
-        this.Port = Port;
-    }
-
-    public void setServerSocket(ServerSocket _ServerSocket) {
-        this._ServerSocket = _ServerSocket;
-    }
-
-    public void setActiveSocket(Socket ActiveSocket) {
-        this.ActiveSocket = ActiveSocket;
-    }
-
-    public void OpenConnection() throws UnknownHostException, IOException{
-        if(!this.Opened){
-            this._ServerSocket = new ServerSocket(this.getPort(), 100,InetAddress.getByName(this.getIP()));
-            this.Opened=true;
-        }
+    public void setSenderConnection(ClientConnection SenderConnection) {
+        this.SenderConnection = SenderConnection;
     }
     
-    public void CloseConnection() throws IOException{
-        if(this.Opened){
-            
-        this._ServerSocket.close();
-        this._ServerSocket=null;
-        this.Opened=false;
-        }
-    }
-    
-    public Message WaitMessage() throws IOException{
-        if(this.Opened){
-            
-       this.ActiveSocket = this._ServerSocket.accept();
-       BufferedReader socketReader = new BufferedReader(new InputStreamReader(this.ActiveSocket.getInputStream()));
-       String inMsg = socketReader.readLine();
-       Message message = Message.fromJson(inMsg);
-       this.ActiveSocket.close();
-       this.ActiveSocket=null;
-       return message;
-    }
-        return null;
-    }
-    public void SendMessage(Message message) throws IOException{
-        Socket socket = new Socket(this.IP, this.Port);
-        BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        socketWriter.write(message.toJson());
-        socketWriter.newLine();
-        socketWriter.flush();
-    }
-        public void Connect() throws IOException{
-        Socket socket = new Socket(this.IP, this.MasterPort);
-        Message message=new Message(MessageKey.Connect,this.messageSide,"");
-        BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        socketWriter.write(message.toJson());
-        socketWriter.newLine();
-        socketWriter.flush();
-    }
-        
-       public void WaitAccept() throws IOException{
-        
-       ServerSocket _ServerSocket1=new ServerSocket(this.MasterPort, 100,InetAddress.getByName(this.getIP()));
-       Socket ActiveSocket2=_ServerSocket1.accept();
-       BufferedReader socketReader = new BufferedReader(new InputStreamReader(this.ActiveSocket.getInputStream()));
-       String inMsg = socketReader.readLine();
-       Message message = Message.fromJson(inMsg);
-       if(message.getKey()==MessageKey.Accept){
-           this.Port=Integer.parseInt(message.getValue());
-       }
+    public void CreateSenderConnection(int port) throws IOException{
+        this.SenderConnection = new ClientConnection(this.IP,port);
     }
     
 }
