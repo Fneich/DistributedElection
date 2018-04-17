@@ -5,18 +5,24 @@
  */
 package Audit;
 
+import Communications.Connection;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
  * @author Fneich
  */
 public class AuditProgram {
+    
+   
+    
     public static void main(String args[]) throws IOException{
+
         Data.LoadCitizensData();
-        AuditMaster auditMaster = new AuditMaster();
-        Thread threadAuditMaster = new Thread(auditMaster);
-        threadAuditMaster.start();
+        AuditMaster auditMaster = new AuditMaster(Integer.parseInt(args[0]));
+
         //Data.GenerateVoterId();
         //Data.SaveCitizensData();
     }

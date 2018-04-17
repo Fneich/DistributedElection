@@ -36,8 +36,8 @@ public class PollingAudit implements Runnable{
       //}
         Message message = Message.fromJson(inMsg);
         
-        if(message.getSide()==Message.MessageSide.Audit && message.getKey()==Message.MessageKey.Begin){Verification(message);}
-        
+        if(message.getSide()==Message.MessageSide.Audit && message.getKey()==Message.MessageKey.Begin){PollingProgram.Status=1;}
+        if(message.getSide()==Message.MessageSide.Audit && message.getKey()==Message.MessageKey.End){PollingProgram.Status=0;}
       
       socket.close();
       this.thread.join();
