@@ -5,11 +5,9 @@
  */
 package Testing;
 
-import Communications.ClientConnection;
 import Communications.Connection;
 import Communications.Message;
 import Communications.Message.MessageSide;
-import Communications.ServerConnection;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -21,22 +19,19 @@ import java.util.logging.Logger;
  */
 public class SocketListener implements Runnable{
 public Thread thread;
-public int Port;
-    public SocketListener(int port) {
+public Connection connection;
+    public SocketListener(Connection connection) {
         this.thread= new Thread(this);
         this.thread.start();
-        this.Port=port;
+        this.connection=connection;
     }
 
         @Override
     public void run() {
     try {
 
-
-        Connection c = Connection.CreateConnectionAsServer("","localhost",MessageSide.Voter);
-        System.out.println(c.getSiteConnection().getPort());
         while(true){
-            Message message=c.getSiteConnection().WaitMessage();
+            Message message=connection.WaitMessage();
             System.out.println(message.getValue());
         }
     } catch (IOException ex) {

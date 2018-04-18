@@ -5,11 +5,17 @@
  */
 package Testing;
 
-import Communications.ClientConnection;
+import Communications.Connection;
 import Communications.Message;
 import Communications.Message.MessageSide;
-import Communications.ServerConnection;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 /**
  *
@@ -18,7 +24,8 @@ import java.io.IOException;
 public class Site2 {
      public static void main(String args[]) throws IOException{
        
-       SocketSender ss = new SocketSender(49744);
+
+
        System.out.println("Site2");
        System.out.println("------------------------------------");
     }
