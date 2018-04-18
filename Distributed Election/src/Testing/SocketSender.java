@@ -17,7 +17,9 @@ package Testing;
 
 
 import Communications.ClientConnection;
+import Communications.Connection;
 import Communications.Message;
+import Communications.Message.MessageSide;
 import Communications.ServerConnection;
 import java.io.IOException;
 import java.util.Scanner;
@@ -42,12 +44,12 @@ public int port;
 @Override
     public void run() {
          try {
-        ClientConnection c = new ClientConnection("localhost",port);
-        // Connection c = new Connection("localhost",10000,MessageSide.Voter);
+
+        Connection c = Connection.CreateConnectionAsClient("","localhost",10000,MessageSide.Voter);
         Scanner sc=new Scanner(System.in);              
         while(true){
             Message message=new Message(Message.MessageKey.Vote,Message.MessageSide.Audit,sc.nextLine());
-            c.SendMessage(message);
+            c.getSiteConnection().SendMessage(message);
         }
     } catch (IOException ex) {
         Logger.getLogger(SocketSender.class.getName()).log(Level.SEVERE, null, ex);

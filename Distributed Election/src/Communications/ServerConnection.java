@@ -19,25 +19,25 @@ import java.net.UnknownHostException;
  *
  * @author Fneich
  */
-public class ServerConnection {
+public class ServerConnection implements SiteConnection{
     private String IP;
     private int Port;
     private ServerSocket _ServerSocket;
     private Socket ActiveSocket;
-    private Boolean Opened;
 
 
     public ServerConnection( String IP) throws UnknownHostException, IOException {
         this.IP = IP;
-        this.Opened=false;
         this.Port=0;
+        this._ServerSocket = new ServerSocket(this.Port, 100,InetAddress.getByName(this.getIP()));
+       this.Port = this._ServerSocket.getLocalPort();
     }
 
  public ServerConnection( String IP,int port) throws UnknownHostException, IOException {
         this.IP = IP;
-        this.Opened=false;
-
         this.Port=port;
+        this._ServerSocket = new ServerSocket(this.Port, 100,InetAddress.getByName(this.getIP()));
+        this.Port = this._ServerSocket.getLocalPort();
     }
 
     public String getIP() {
@@ -56,11 +56,6 @@ public class ServerConnection {
         return ActiveSocket;
     }
 
-    public Boolean getOpened() {
-        return Opened;
-    }
-
-
 
     public void setIP(String IP) {
         this.IP = IP;
@@ -78,27 +73,16 @@ public class ServerConnection {
         this.ActiveSocket = ActiveSocket;
     }
 
-    public void OpenConnection() throws UnknownHostException, IOException{
-        if(!this.Opened){
-            this._ServerSocket = new ServerSocket(this.Port, 100,InetAddress.getByName(this.getIP()));
-            this.Port=this._ServerSocket.getLocalPort();
-            this.Opened=true;
-        }
-    }
+
     
-    public void CloseConnection() throws IOException{
-        if(this.Opened){
-            
-        this._ServerSocket.close();
-        this._ServerSocket=null;
-        this.Opened=false;
-        }
-    }
+
     
+    @Override
     public Message WaitMessage() throws IOException{
-        if(this.Opened){
+       if(this.ActiveSocket==null){
+           this.ActiveSocket = this._ServerSocket.accept();
+       }
             
-       this.ActiveSocket = this._ServerSocket.accept();
        BufferedReader socketReader = new BufferedReader(new InputStreamReader(this.ActiveSocket.getInputStream()));
        String inMsg = socketReader.readLine();
        Message message = Message.fromJson(inMsg);
@@ -106,15 +90,12 @@ public class ServerConnection {
        this.ActiveSocket=null;
        return message;
     }
-        return null;
-    }
+@Override
     public void SendMessage(Message message) throws IOException{
-        Socket socket = new Socket(this.IP, this.Port);
         BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(this.ActiveSocket.getOutputStream()));
         socketWriter.write(message.toJson());
         socketWriter.newLine();
         socketWriter.flush();
-        socket.close();
     }
 
 

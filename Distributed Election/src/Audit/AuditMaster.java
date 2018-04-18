@@ -82,10 +82,7 @@ public class AuditMaster implements Runnable {
             }
             
             }
-            
-            
-            
-            
+
          }
         }
          catch (UnknownHostException ex) {

@@ -6,6 +6,7 @@
 package Voter;
 
 import Blockchain.Voter;
+import Communications.Connection;
 import Communications.Message;
 import Communications.Message.MessageKey;
 import Communications.Message.MessageSide;
@@ -36,6 +37,7 @@ import javax.crypto.NoSuchPaddingException;
  */
 public class VoterRegistrationRepository {
     private Voter voter;
+    private Connection connection;
 
     public VoterRegistrationRepository(Voter voter) {
         this.voter = voter;
@@ -50,21 +52,28 @@ public class VoterRegistrationRepository {
     }
     
     public String getVotingId() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException{
-    Socket socket = new Socket("localhost", 12900);
+    Socket socket = new Socket("localhost", 20000);
     System.out.println("Started client  socket at " + socket.getLocalSocketAddress());
     BufferedReader socketReader = new BufferedReader(new InputStreamReader(
         socket.getInputStream()));
     BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(
         socket.getOutputStream()));
-     Message RegisterMessage = new Message(MessageKey.Regitration,MessageSide.Voter,"");
+     Message RegisterMessage = new Message(MessageKey.Connect,MessageSide.Voter,"");
     socketWriter.write(RegisterMessage.toJson());
     //socketWriter.write("Hello");
     socketWriter.newLine();
      socketWriter.flush();
     //socketWriter.close();
    
+    String Port = socketReader.readLine();
+    System.out.println("I Receve a Port:"+Port);
+    Message MyPort = Message.fromJson(Port);
+    if(MyPort.getKey()==MessageKey.Port && MyPort.getSide()== MessageSide.Audit){
+       this.connection = new Connection("","localhost", MessageSide.Audit) ;
+       this.connection.CreateSenderConnection(Integer.parseInt(MyPort.getValue()) );
+    }
      
-    System.out.println("I send a registration");
+    System.out.println("I send a connection");
     String outMsg = null;
     String Mykey = socketReader.readLine();
     System.out.println("I Receve My Key:"+Mykey);

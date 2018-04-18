@@ -21,7 +21,7 @@ public class AuditProgram {
     public static void main(String args[]) throws IOException{
 
         Data.LoadCitizensData();
-        AuditMaster auditMaster = new AuditMaster(Integer.parseInt(args[0]));
+        AuditMaster auditMaster = new AuditMaster(2);
 
         //Data.GenerateVoterId();
         //Data.SaveCitizensData();

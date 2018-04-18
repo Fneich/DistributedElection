@@ -6,7 +6,9 @@
 package Testing;
 
 import Communications.ClientConnection;
+import Communications.Connection;
 import Communications.Message;
+import Communications.Message.MessageSide;
 import Communications.ServerConnection;
 import java.io.IOException;
 import java.util.Scanner;
@@ -29,12 +31,12 @@ public int Port;
         @Override
     public void run() {
     try {
-        ServerConnection c = new ServerConnection("localhost");
-        //Connection c = new Connection("localhost",10000,MessageSide.Voter);
-        c.OpenConnection();
-       // System.out.println(c.getPort());
+
+
+        Connection c = Connection.CreateConnectionAsServer("","localhost",MessageSide.Voter);
+        System.out.println(c.getSiteConnection().getPort());
         while(true){
-            Message message=c.WaitMessage();
+            Message message=c.getSiteConnection().WaitMessage();
             System.out.println(message.getValue());
         }
     } catch (IOException ex) {

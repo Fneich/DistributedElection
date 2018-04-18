@@ -42,24 +42,17 @@ public class AuditVoter implements Runnable {
     public void run() {
       try{
 
-      socketReader = new BufferedReader(new InputStreamReader(
-          connection.getActiveSocket().getInputStream()));
-      socketWriter = new BufferedWriter(new OutputStreamWriter(
-          connection.getActiveSocket().getOutputStream()));
-       System.out.println("I wait a registration");
-      String inMsg = socketReader.readLine();
-      
-          System.out.println("I receve a registration");
+       //socketReader = new BufferedReader(new InputStreamReader(connection.get.getInputStream()));
+       //socketWriter = new BufferedWriter(new OutputStreamWriter(connection.getActiveSocket().getOutputStream()));
+        System.out.println("I wait a registration");
+        Message message = connection.getReceverConnection().WaitMessage();
+        String inMsg = socketReader.readLine();    
+        System.out.println("I receve a registration");
         System.out.println("Received from  client: " + inMsg);
-       // if (inMsg.equalsIgnoreCase("bye")) {
-       // break;
-      //}
-        Message message = Message.fromJson(inMsg);
         
         if(message.getSide()==Message.MessageSide.Voter && message.getKey()==Message.MessageKey.Regitration){VoterService(message);}
-        if(message.getSide()==Message.MessageSide.Polling && message.getKey()==Message.MessageKey.Information){VoterService(message);}
-      
-      connection.getActiveSocket().close();
+       // if(message.getSide()==Message.MessageSide.Polling && message.getKey()==Message.MessageKey.Information){VoterService(message);}
+
       this.thread.join();
     }catch(Exception e){
       e.printStackTrace();
@@ -78,17 +71,20 @@ public class AuditVoter implements Runnable {
       AsymetricEncryption AE = new AsymetricEncryption();
       Gson g=new Gson();
       Message YourKey = new Message(Message.MessageKey.PublicKey,Message.MessageSide.Audit,g.toJson(AE.getGenerateKeys().getPublicKey().getEncoded()) );
-      socketWriter.write(YourKey.toJson());
-      socketWriter.newLine();
-      socketWriter.flush();    
-      String m = socketReader.readLine();
-      Message YourInfo = Message.fromJson(m);
+     // socketWriter.write(YourKey.toJson());
+      //socketWriter.newLine();
+      //socketWriter.flush();    
+      connection.getSenderConnection().SendMessage(YourKey);     
+      //String m = socketReader.readLine();
+      //Message YourInfo = Message.fromJson(m);
+      Message YourInfo = connection.getReceverConnection().WaitMessage();
       String info=AE.decryptText(YourInfo.getValue());
-      Voter v =Voter.fromJson(info); 
+      Voter v =Voter.fromJson(info);
       String votingid =Data.getVotingId(v);
       System.out.println(votingid );
-      m = socketReader.readLine();
-      Message MyKey = Message.fromJson(m);
+      //m = socketReader.readLine();
+     // Message MyKey = Message.fromJson(m);
+        Message MyKey = connection.getReceverConnection().WaitMessage();
       if(MyKey.getKey()==Message.MessageKey.PublicKey){
           AsymetricEncryption AE2 = new AsymetricEncryption();
           String votingidString = String.valueOf(votingid); 
@@ -96,9 +92,10 @@ public class AuditVoter implements Runnable {
           byte[] b =g.fromJson(MyKey.getValue(),listType);
           String VotingIdEncrypted =AE2.encryptText(votingidString, b);
           Message YourId = new Message(Message.MessageKey.Information,Message.MessageSide.Audit,VotingIdEncrypted);
-          socketWriter.write(YourId.toJson());
-          socketWriter.newLine();
-          socketWriter.flush();
+          connection.getSenderConnection().SendMessage(YourId); 
+          //socketWriter.write(YourId.toJson());
+          //socketWriter.newLine();
+          //socketWriter.flush();
       }
     
     }

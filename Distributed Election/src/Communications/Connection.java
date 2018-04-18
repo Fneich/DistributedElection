@@ -16,22 +16,45 @@ public class Connection {
     
     private String Id;
     private String IP;
+    private int Port;
     private MessageSide Side;
-    private ServerConnection ReceverConnection;
-    private ClientConnection SenderConnection;
+    private SiteConnection SiteConnection;
 
-    public Connection(String Id,String ip, MessageSide Side, ServerConnection ReceverConnection, ClientConnection SenderConnection) {
+    public void setIP(String IP) {
+        this.IP = IP;
+    }
+
+    public void setSiteConnection(SiteConnection SiteConnection) {
+        this.SiteConnection = SiteConnection;
+    }
+
+    public String getIP() {
+        return IP;
+    }
+
+    public SiteConnection getSiteConnection() {
+        return SiteConnection;
+    }
+
+
+    public Connection(String Id,String ip, MessageSide Side, SiteConnection siteConnection) {
         this.Id = Id;
         this.Side = Side;
-        this.ReceverConnection = ReceverConnection;
-        this.SenderConnection = SenderConnection;
+        this.SiteConnection =siteConnection;
         this.IP=ip;
     }
  public Connection(String Id,String ip, MessageSide Side) throws IOException {
      this.IP=ip;
         this.Id = Id;
         this.Side = Side;
-        this.ReceverConnection = new ServerConnection(this.IP);
+         this.SiteConnection = new ServerConnection(this.IP);
+    }
+  public Connection(String Id,String ip,int port, MessageSide Side) throws IOException {
+         this.IP=ip;
+        this.Port=port;
+        this.Id = Id;
+        this.Side = Side;
+         this.SiteConnection = new ClientConnection(this.IP,this.Port);
     }
     public String getId() {
         return Id;
@@ -40,15 +63,6 @@ public class Connection {
     public MessageSide getSide() {
         return Side;
     }
-
-    public ServerConnection getReceverConnection() {
-        return ReceverConnection;
-    }
-
-    public ClientConnection getSenderConnection() {
-        return SenderConnection;
-    }
-
     public void setId(String Id) {
         this.Id = Id;
     }
@@ -56,17 +70,10 @@ public class Connection {
     public void setSide(MessageSide Side) {
         this.Side = Side;
     }
-
-    public void setReceverConnection(ServerConnection ReceverConnection) {
-        this.ReceverConnection = ReceverConnection;
+    public static Connection CreateConnectionAsServer(String Id,String ip, MessageSide Side) throws IOException{
+          return new Connection(Id,ip,Side);
     }
-
-    public void setSenderConnection(ClientConnection SenderConnection) {
-        this.SenderConnection = SenderConnection;
+public static Connection CreateConnectionAsClient(String Id,String ip,int port, MessageSide Side) throws IOException{
+          return new Connection(Id,ip,port,Side);
     }
-    
-    public void CreateSenderConnection(int port) throws IOException{
-        this.SenderConnection = new ClientConnection(this.IP,port);
-    }
-    
 }

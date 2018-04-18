@@ -19,17 +19,19 @@ import java.net.UnknownHostException;
  *
  * @author Fneich
  */
-public class ClientConnection {
+public class ClientConnection implements SiteConnection{
     private String IP;
     private int Port;
     private Socket ActiveSocket;
-    private Boolean Opened;
+
 
     
     public ClientConnection( String IP,int port) throws UnknownHostException, IOException {
         this.IP = IP;
         this.Port=port;
-        this.Opened=false;
+        System.out.println();
+        this.ActiveSocket = new Socket(this.IP,this.Port);
+
 
     }
 
@@ -47,10 +49,6 @@ public class ClientConnection {
         return ActiveSocket;
     }
 
-    public Boolean getOpened() {
-        return Opened;
-    }
-
 
     public void setIP(String IP) {
         this.IP = IP;
@@ -66,24 +64,10 @@ public class ClientConnection {
         this.ActiveSocket = ActiveSocket;
     }
 
-    public void OpenConnection() throws UnknownHostException, IOException{
-        if(!this.Opened){
-            this.ActiveSocket = new Socket(InetAddress.getByName(this.getIP()),this.Port);
-            this.Opened=true;
-        }
-    }
-    
-    public void CloseConnection() throws IOException{
-        if(this.Opened){
-            
-        this.ActiveSocket.close();
-        this.ActiveSocket=null;
-        this.Opened=false;
-        }
-    }
-    
+
+  
     public Message WaitMessage() throws IOException{
-        if(this.Opened){            
+                    
        BufferedReader socketReader = new BufferedReader(new InputStreamReader(this.ActiveSocket.getInputStream()));
        String inMsg = socketReader.readLine();
        Message message = Message.fromJson(inMsg);
@@ -91,15 +75,18 @@ public class ClientConnection {
        this.ActiveSocket=null;
        return message;
     }
-        return null;
-    }
+
     public void SendMessage(Message message) throws IOException{
-        Socket socket = new Socket(this.IP, this.Port);
-        BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+        BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(this.ActiveSocket.getOutputStream()));
         socketWriter.write(message.toJson());
         socketWriter.newLine();
         socketWriter.flush();
-        socket.close();
+
     }
+
+
+
+
 
 }

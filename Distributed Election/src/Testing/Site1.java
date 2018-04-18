@@ -18,7 +18,6 @@ import java.util.Scanner;
  */
 public class Site1 {
      public static void main(String args[]) throws IOException{
-         SocketSender ss = new SocketSender(2000);
          SocketListener sl =new SocketListener(3000);
          System.out.println("Site1");
           System.out.println("------------------------------------");

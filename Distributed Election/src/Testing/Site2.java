@@ -18,9 +18,8 @@ import java.io.IOException;
 public class Site2 {
      public static void main(String args[]) throws IOException{
        
-       SocketSender ss = new SocketSender(3000);
-       SocketListener sl =new SocketListener(2000);
+       SocketSender ss = new SocketSender(49744);
        System.out.println("Site2");
-          System.out.println("------------------------------------");
+       System.out.println("------------------------------------");
     }
 }
