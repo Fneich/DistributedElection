@@ -34,8 +34,7 @@ import javax.crypto.NoSuchPaddingException;
 public class AuditVoter implements Runnable {
      private Connection connection;
     private Thread thread;
-     private  BufferedReader socketReader = null;
-     private BufferedWriter socketWriter = null;
+
     @Override
     public void run() {
       try{
@@ -43,6 +42,7 @@ public class AuditVoter implements Runnable {
        //socketReader = new BufferedReader(new InputStreamReader(connection.get.getInputStream()));
        //socketWriter = new BufferedWriter(new OutputStreamWriter(connection.getActiveSocket().getOutputStream()));
         System.out.println("I wait a registration");
+        
         Message message = connection.WaitMessage();
     
         System.out.println("I receve a registration");
@@ -69,19 +69,12 @@ public class AuditVoter implements Runnable {
       AsymetricEncryption AE = new AsymetricEncryption();
       Gson g=new Gson();
       Message YourKey = new Message(Message.MessageKey.PublicKey,Message.MessageSide.Audit,g.toJson(AE.getGenerateKeys().getPublicKey().getEncoded()) );
-     // socketWriter.write(YourKey.toJson());
-      //socketWriter.newLine();
-      //socketWriter.flush();    
       connection.SendMessage(YourKey);     
-      //String m = socketReader.readLine();
-      //Message YourInfo = Message.fromJson(m);
       Message YourInfo = connection.WaitMessage();
       String info=AE.decryptText(YourInfo.getValue());
       Voter v =Voter.fromJson(info);
       String votingid =Data.getVotingId(v);
       System.out.println(votingid );
-      //m = socketReader.readLine();
-     // Message MyKey = Message.fromJson(m);
         Message MyKey = connection.WaitMessage();
       if(MyKey.getKey()==Message.MessageKey.PublicKey){
           AsymetricEncryption AE2 = new AsymetricEncryption();
@@ -91,9 +84,7 @@ public class AuditVoter implements Runnable {
           String VotingIdEncrypted =AE2.encryptText(votingidString, b);
           Message YourId = new Message(Message.MessageKey.Information,Message.MessageSide.Audit,VotingIdEncrypted);
           connection.SendMessage(YourId); 
-          //socketWriter.write(YourId.toJson());
-          //socketWriter.newLine();
-          //socketWriter.flush();
+
       }
     
     }

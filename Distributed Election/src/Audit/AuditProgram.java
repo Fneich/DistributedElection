@@ -9,6 +9,7 @@ package Audit;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -21,6 +22,8 @@ public class AuditProgram {
     public static void main(String args[]) throws IOException{
 
         Data.LoadCitizensData();
+        Random r=new Random();
+        
         AuditMaster auditMaster = new AuditMaster(2);
 
         //Data.GenerateVoterId();

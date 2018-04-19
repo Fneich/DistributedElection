@@ -43,7 +43,7 @@ public class AuditMaster implements Runnable {
 
     @Override
     public void run() {
-        Hoster hoster = new Hoster("","localhost",10000,MessageSide.Audit);
+        Hoster hoster = new Hoster("","localhost",this.Id*10000,MessageSide.Audit);
         while(true){
             try {
                 if(hoster.getConnection()!=null){           
@@ -57,56 +57,6 @@ public class AuditMaster implements Runnable {
             }
         }
         
-        /*
-         ServerSocket serverSocket;
-        try {
-            serverSocket = new ServerSocket(this.Id*10000, 100,InetAddress.getByName("localhost"));
-            System.out.println("AuditMaster started  at:  " + serverSocket);
-            while (true) {
-            System.out.println("Waiting for a  connection...");
-            final Socket activeSocket = serverSocket.accept();
-            System.out.println("Received a  connection from  " + activeSocket);
-            BufferedReader   socketReader = new BufferedReader(new InputStreamReader(
-            activeSocket.getInputStream()));
-            String inMsg = socketReader.readLine();
-            System.out.println("Received from  client: " + inMsg);
-            Message message = Message.fromJson(inMsg);
-            if(message.getKey()==Message.MessageKey.Connect){
-              
-            Connection c=new Connection("","localhost",message.getSide()); 
-            BufferedWriter socketWriter= new BufferedWriter(new OutputStreamWriter(
-            activeSocket.getOutputStream()));
-            Message accept = new Message(Message.MessageKey.Accept,Message.MessageSide.Audit,"");
-            socketWriter.write(accept.toJson());
-            socketWriter.newLine();
-            socketWriter.flush();
-            Message port1 = new Message(Message.MessageKey.Port,Message.MessageSide.Audit,String.valueOf(c.getReceverConnection().getPort()));
-            socketWriter.write(accept.toJson());
-            socketWriter.newLine();
-            socketWriter.flush();
-            String port2 = socketReader.readLine();
-            System.out.println("Received from  client: " + inMsg);
-            message = Message.fromJson(port2);
-            if(message.getKey()==Message.MessageKey.Port){
-             int port =Integer.parseInt( message.getValue());
-             c.CreateSenderConnection(port);
-             PollingStations.add(c);
-             if(message.getSide()==MessageSide.Voter){
-                AuditVoter audit= new AuditVoter(c);
-            }
-            }
-            
-            }
-
-         }
-        }
-         catch (UnknownHostException ex) {
-            Logger.getLogger(AuditMaster.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(AuditMaster.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-*/
     }
     }
     

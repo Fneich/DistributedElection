@@ -28,15 +28,10 @@ public Connection connection;
 
         @Override
     public void run() {
-    try {
-
         while(true){
             Message message=connection.WaitMessage();
             System.out.println(message.getValue());
         }
-    } catch (IOException ex) {
-        Logger.getLogger(SocketSender.class.getName()).log(Level.SEVERE, null, ex);
-    }
     }
     
 }

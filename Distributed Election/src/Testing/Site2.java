@@ -5,6 +5,7 @@
  */
 package Testing;
 
+import Communications.Connecter;
 import Communications.Connection;
 import Communications.Message;
 import Communications.Message.MessageSide;
@@ -25,8 +26,16 @@ public class Site2 {
      public static void main(String args[]) throws IOException{
        
 
-
+         Connecter c =new Connecter("","localhost",MessageSide.Audit);
+         c.ConnectTo(10000);
+         Connection con = c.getConnection();
+         con.CreateSender(10000);
        System.out.println("Site2");
        System.out.println("------------------------------------");
+       while(con.getLastMessage()==null){
+           
+       }
+       System.out.println(con.getLastMessage().getValue());
+       con.setLastMessage(null);
     }
 }

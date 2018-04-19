@@ -112,7 +112,9 @@ public class VoterRegistrationRepository {
     //String vid = socketReader.readLine(); 
     //Message votingMessageid = Message.fromJson(vid);
     Message votingMessageid = connection.WaitMessage();
-    String VotingId =AE2.decryptText(votingMessageid.getValue());  
+    String VotingId =AE2.decryptText(votingMessageid.getValue()); 
+    connection.SendMessage(new Message(MessageKey.Disconnect,MessageSide.Voter,""));
+    
     return VotingId;
     }
     

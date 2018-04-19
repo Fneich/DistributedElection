@@ -5,8 +5,11 @@
  */
 package PollingStation;
 
-import Audit.Audit;
+
 import Audit.AuditMaster;
+import Audit.AuditVoter;
+import Communications.Connection;
+import Communications.Hoster;
 import Communications.Message;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,6 +20,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,41 +29,31 @@ import java.util.logging.Logger;
  *
  * @author Fneich
  */
-public class PollingMaster implements Runnable{
-        @Override
-    public void run() {
-         ServerSocket serverSocket;
-        try {
-            serverSocket = new ServerSocket(11900, 100,InetAddress.getByName("localhost"));
-            System.out.println("PollingMaster started  at:  " + serverSocket);
-         while (true) {
-            System.out.println("Waiting for a  connection...");
-            final Socket activeSocket = serverSocket.accept();
-            System.out.println("Received a  connection from  " + activeSocket);
-             BufferedReader socketReader = new BufferedReader(new InputStreamReader(activeSocket.getInputStream()));
+public class PollingMaster implements Runnable {
+        private int Id;
+        private List<Connection> Connections;
+        private Thread threadPollingMaster;
+        
 
-        String inMsg = socketReader.readLine();
-        System.out.println("Received from  client: " + inMsg);
-       // if (inMsg.equalsIgnoreCase("bye")) {
-       // break;
-      //}
-            Message message = Message.fromJson(inMsg);
-            if(message.getSide()==Message.MessageSide.Audit && message.getKey()==Message.MessageKey.Connect){
-                
-                PollingAudit audit= new PollingAudit(activeSocket);
-            
-            }
-            
-            
-            
-         }
-        }
-         catch (UnknownHostException ex) {
-            Logger.getLogger(AuditMaster.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(AuditMaster.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public PollingMaster(int id) throws IOException {
+        this.Id=id;
+        Connections = new ArrayList<Connection>();
 
-
+        this.threadPollingMaster = new Thread(this);
+        threadPollingMaster.start();
     }
-}
+
+
+    @Override
+    public void run() {
+        Hoster hoster = new Hoster("","localhost",(this.Id+1)*1000,Message.MessageSide.Polling);
+        while(true){
+            if(hoster.getConnection()!=null){
+                PollingVoter audit= new PollingVoter(hoster.getConnection());
+                Connections.add(hoster.getConnection());
+                hoster.setConnection(null);
+            }
+        }
+        
+    }
+    }

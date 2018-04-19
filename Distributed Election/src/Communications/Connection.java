@@ -5,6 +5,7 @@
  */
 package Communications;
 
+import Communications.Message.MessageKey;
 import Communications.Message.MessageSide;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -21,12 +22,23 @@ public class Connection {
     private MessageSide Side;
     private Recever Recever;
     private Sender Sender;
+    private Message LastMessage;
+    private ReceverRepository receverRepository ;
 
     public Connection(String Id, String IP, MessageSide Side) throws IOException {
         this.Id = Id;
         this.IP = IP;
         this.Side = Side;
         this.Recever = new Recever(this.IP);
+        this.receverRepository = new ReceverRepository(this);
+    }
+
+    public void setLastMessage(Message LastMessage) {
+        this.LastMessage = LastMessage;
+    }
+
+    public Message getLastMessage() {
+        return LastMessage;
     }
 
     public String getId() {
@@ -62,13 +74,34 @@ public class Connection {
       }
     }
   
-  public Message WaitMessage() throws IOException{
-     return this.Recever.WaitMessage();
+  public Message ReceveMessage() throws IOException{
+     
+     Message m =this.Recever.ReceveMessage();
+     if(m.getKey()==MessageKey.Disconnect){
+         if(this.Sender!=null){
+            this.Sender.SendMessage(new Message(MessageKey.Disconnect,this.getSide(),"")); 
+         }
+     
+     
+     }
+     
+     return m;
+  }
+  
+  public Message WaitMessage(){
+      while(this.LastMessage==null){System.out.println("wait !!");}
+      Message message=this.LastMessage;
+      this.LastMessage=null;
+      return message;
   }
   
   public int getReceverPort(){
     return this.Recever.getPort();
   }
   
+  public void closeConnection(){
+      
+      
+  }
   
 }

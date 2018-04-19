@@ -44,7 +44,7 @@ public class Recever {
         this.Port = Port;
     }
     
-       public Message WaitMessage() throws IOException{
+       public Message ReceveMessage() throws IOException{
        if(this.Socket==null){
            this.Socket = this.serverSocket.accept();
        }         

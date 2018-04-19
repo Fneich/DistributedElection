@@ -7,6 +7,7 @@ package PollingStation;
 
 import Audit.Data;
 import Blockchain.Voter;
+import Communications.Connection;
 import Communications.Message;
 import Encryption.AsymetricEncryption;
 import com.google.gson.Gson;
@@ -31,37 +32,28 @@ import javax.crypto.NoSuchPaddingException;
  * @author Fneich
  */
 public class PollingVoter implements Runnable{
-    private Socket socket;
+     private Connection connection;
     private Thread thread;
-    private  BufferedReader socketReader = null;
-    private BufferedWriter socketWriter = null;
+
     @Override
     public void run() {
       try{
 
-      socketReader = new BufferedReader(new InputStreamReader(
-          socket.getInputStream()));
-      socketWriter = new BufferedWriter(new OutputStreamWriter(
-          socket.getOutputStream()));
-      String inMsg = socketReader.readLine();
-        System.out.println("Received from  client: " + inMsg);
-       // if (inMsg.equalsIgnoreCase("bye")) {
-       // break;
-      //}
-        Message message = Message.fromJson(inMsg);
+
+
+        Message message = connection.ReceveMessage();
         
         if(message.getSide()==Message.MessageSide.Voter && message.getKey()==Message.MessageKey.Result){ResultService(message);}
         if(message.getSide()==Message.MessageSide.Voter && message.getKey()==Message.MessageKey.Vote){VoteService(message);}
       
-      socket.close();
       this.thread.join();
     }catch(Exception e){
       e.printStackTrace();
     }
     }
 
-    public PollingVoter(Socket socket) {
-        this.socket = socket;
+    public PollingVoter(Connection connection) {
+        this.connection=connection;
         this.thread =new Thread(this);
         this.thread.start();
     }
@@ -72,6 +64,14 @@ public class PollingVoter implements Runnable{
 
     private void VoteService(Message message) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
     
     

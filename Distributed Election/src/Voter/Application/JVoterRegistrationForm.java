@@ -174,7 +174,7 @@ public class JVoterRegistrationForm extends javax.swing.JFrame {
             Voter voter = new Voter(UUID.fromString(txtId.getText()),Integer.parseInt(txtPassword.getText()),txtFirstName.getText(),txtLastName.getText());
             VoterRegistrationRepository VRR = new VoterRegistrationRepository(voter);
             String voterid=VRR.getVotingId();
-            if(voterid==null){JOptionPane.showMessageDialog(null, "Incorrect Information");}
+            if(voterid==null || voterid=="null"){JOptionPane.showMessageDialog(null, "Incorrect Information");}
             else{txtVotingId.setText(voterid);}
         } catch (IOException ex) {
             Logger.getLogger(JVoterRegistrationForm.class.getName()).log(Level.SEVERE, null, ex);
