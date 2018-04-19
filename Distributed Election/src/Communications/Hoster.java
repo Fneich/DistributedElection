@@ -31,6 +31,56 @@ public class Hoster implements Runnable{
     private int port;
     private MessageSide messageSide;
     private Connection connection;
+    private Thread thread;
+
+    public Hoster(String Id, String Ip, int port, MessageSide messageSide) {
+        this.Id = Id;
+        this.Ip = Ip;
+        this.port = port;
+        this.messageSide = messageSide;
+        this.thread=new Thread(this);
+        this.thread.start();
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public String getIp() {
+        return Ip;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public MessageSide getMessageSide() {
+        return messageSide;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setId(String Id) {
+        this.Id = Id;
+    }
+
+    public void setIp(String Ip) {
+        this.Ip = Ip;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public void setMessageSide(MessageSide messageSide) {
+        this.messageSide = messageSide;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
 
     @Override
     public void run() {

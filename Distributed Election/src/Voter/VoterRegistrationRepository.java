@@ -6,6 +6,7 @@
 package Voter;
 
 import Blockchain.Voter;
+import Communications.Connecter;
 import Communications.Connection;
 import Communications.Message;
 import Communications.Message.MessageKey;
@@ -52,7 +53,7 @@ public class VoterRegistrationRepository {
     }
     
     public String getVotingId() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException{
-    Socket socket = new Socket("localhost", 20000);
+    /*Socket socket = new Socket("localhost", 20000);
     System.out.println("Started client  socket at " + socket.getLocalSocketAddress());
     BufferedReader socketReader = new BufferedReader(new InputStreamReader(
         socket.getInputStream()));
@@ -71,14 +72,25 @@ public class VoterRegistrationRepository {
     if(MyPort.getKey()==MessageKey.Port && MyPort.getSide()== MessageSide.Audit){
        this.connection = new Connection("","localhost", MessageSide.Audit) ;
        this.connection.CreateSenderConnection(Integer.parseInt(MyPort.getValue()) );
-    }
-     
+    }*/
+    Connecter connecter = new Connecter("","localhost",MessageSide.Voter);
+    connecter.ConnectTo(10000);
+    Connection connection=null;
     System.out.println("I send a connection");
-    String outMsg = null;
-    String Mykey = socketReader.readLine();
-    System.out.println("I Receve My Key:"+Mykey);
-    Message MyKey = Message.fromJson(Mykey);
-    
+    while(true){
+    if(connecter.getConnection()!=null){connection=connecter.getConnection(); break;}
+    }
+    System.out.println("I receve an accept");
+    Message registermessage= new Message(MessageKey.Regitration,MessageSide.Voter,"");
+    connection.SendMessage(registermessage);
+    System.out.println("I send a registration");
+    System.out.println("I wait my key");
+    //String outMsg = null;
+    //String Mykey = socketReader.readLine();
+   // System.out.println("I Receve My Key:"+Mykey);
+    //Message MyKey = Message.fromJson(Mykey);
+    Message MyKey= connection.WaitMessage();
+            
     AsymetricEncryption AE = new AsymetricEncryption();
     System.out.println(MyKey.getValue());
     Gson g =new Gson();
@@ -87,18 +99,20 @@ public class VoterRegistrationRepository {
     byte[] b =g.fromJson(MyKey.getValue(),listType);
     String MyinfoEncrypted=AE.encryptText(voter.toJson(), b);
     Message Myinfo = new Message(MessageKey.Information,MessageSide.Voter,MyinfoEncrypted);
-    socketWriter.write(Myinfo.toJson());
-    socketWriter.newLine();
-    socketWriter.flush();
+    connection.SendMessage(Myinfo);
+   // socketWriter.write(Myinfo.toJson());
+    //socketWriter.newLine();
+    //socketWriter.flush();
     AsymetricEncryption AE2 = new AsymetricEncryption();
     Message YourKey = new Message(MessageKey.PublicKey,MessageSide.Voter,g.toJson( AE2.getGenerateKeys().getPublicKey().getEncoded()));
-    socketWriter.write(YourKey.toJson());
-    socketWriter.newLine();
-    socketWriter.flush(); 
-    String vid = socketReader.readLine(); 
-    Message votingMessageid = Message.fromJson(vid);
-    String VotingId =AE2.decryptText(votingMessageid.getValue());
-    socket.close();   
+   connection.SendMessage(YourKey);
+    //socketWriter.write(YourKey.toJson());
+    //socketWriter.newLine();
+   // socketWriter.flush(); 
+    //String vid = socketReader.readLine(); 
+    //Message votingMessageid = Message.fromJson(vid);
+    Message votingMessageid = connection.WaitMessage();
+    String VotingId =AE2.decryptText(votingMessageid.getValue());  
     return VotingId;
     }
     

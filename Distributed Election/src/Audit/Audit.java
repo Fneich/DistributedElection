@@ -44,8 +44,8 @@ public class Audit implements Runnable{
           socket.getInputStream()));
       socketWriter = new BufferedWriter(new OutputStreamWriter(
           socket.getOutputStream()));
-       System.out.println("I wait a registration");
-      String inMsg = socketReader.readLine();
+        System.out.println("I wait a registration");
+        String inMsg = socketReader.readLine();
       
           System.out.println("I receve a registration");
         System.out.println("Received from  client: " + inMsg);

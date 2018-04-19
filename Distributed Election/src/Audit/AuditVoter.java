@@ -6,9 +6,7 @@
 package Audit;
 
 import Blockchain.Voter;
-import Communications.ClientConnection;
 import Communications.Connection;
-
 import Communications.Message;
 import Communications.Message.MessageSide;
 import Encryption.AsymetricEncryption;
@@ -45,12 +43,12 @@ public class AuditVoter implements Runnable {
        //socketReader = new BufferedReader(new InputStreamReader(connection.get.getInputStream()));
        //socketWriter = new BufferedWriter(new OutputStreamWriter(connection.getActiveSocket().getOutputStream()));
         System.out.println("I wait a registration");
-        Message message = connection.getReceverConnection().WaitMessage();
-        String inMsg = socketReader.readLine();    
+        Message message = connection.WaitMessage();
+    
         System.out.println("I receve a registration");
-        System.out.println("Received from  client: " + inMsg);
+        System.out.println("Received from  client: " + message.getValue());
         
-        if(message.getSide()==Message.MessageSide.Voter && message.getKey()==Message.MessageKey.Regitration){VoterService(message);}
+        if(message.getSide()==Message.MessageSide.Voter && message.getKey()==Message.MessageKey.Regitration){VoterService();}
        // if(message.getSide()==Message.MessageSide.Polling && message.getKey()==Message.MessageKey.Information){VoterService(message);}
 
       this.thread.join();
@@ -65,7 +63,7 @@ public class AuditVoter implements Runnable {
         this.thread.start();
     }
     
-    public void VoterService(Message message) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException{
+    public void VoterService() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException{
     
     
       AsymetricEncryption AE = new AsymetricEncryption();
@@ -74,17 +72,17 @@ public class AuditVoter implements Runnable {
      // socketWriter.write(YourKey.toJson());
       //socketWriter.newLine();
       //socketWriter.flush();    
-      connection.getSenderConnection().SendMessage(YourKey);     
+      connection.SendMessage(YourKey);     
       //String m = socketReader.readLine();
       //Message YourInfo = Message.fromJson(m);
-      Message YourInfo = connection.getReceverConnection().WaitMessage();
+      Message YourInfo = connection.WaitMessage();
       String info=AE.decryptText(YourInfo.getValue());
       Voter v =Voter.fromJson(info);
       String votingid =Data.getVotingId(v);
       System.out.println(votingid );
       //m = socketReader.readLine();
      // Message MyKey = Message.fromJson(m);
-        Message MyKey = connection.getReceverConnection().WaitMessage();
+        Message MyKey = connection.WaitMessage();
       if(MyKey.getKey()==Message.MessageKey.PublicKey){
           AsymetricEncryption AE2 = new AsymetricEncryption();
           String votingidString = String.valueOf(votingid); 
@@ -92,7 +90,7 @@ public class AuditVoter implements Runnable {
           byte[] b =g.fromJson(MyKey.getValue(),listType);
           String VotingIdEncrypted =AE2.encryptText(votingidString, b);
           Message YourId = new Message(Message.MessageKey.Information,Message.MessageSide.Audit,VotingIdEncrypted);
-          connection.getSenderConnection().SendMessage(YourId); 
+          connection.SendMessage(YourId); 
           //socketWriter.write(YourId.toJson());
           //socketWriter.newLine();
           //socketWriter.flush();
