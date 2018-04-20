@@ -63,7 +63,7 @@ public class AuditVoter implements Runnable {
         this.thread.start();
     }
     
-    public void VoterService() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException{
+    public void VoterService() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeySpecException, InterruptedException{
     
     
       AsymetricEncryption AE = new AsymetricEncryption();

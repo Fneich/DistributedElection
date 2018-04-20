@@ -67,15 +67,18 @@ public class AuditMaster implements Runnable {
         Hoster hoster = new Hoster("","localhost",this.Id*10000,MessageSide.Audit);
         while(true){
             try {
+                
                 if(hoster.getConnection()!=null){ 
+                    System.out.println("moudi2");
                    if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Voter){
                     AuditVoter audit= new AuditVoter(hoster.getConnection());                  
                    }
                    if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Polling){
                        
+                       AuditPolling AP = new AuditPolling(hoster.getConnection());
                    }
                    
-                   hoster.setConnection(null);
+                   //hoster.setConnection(null);
                   
                 }
                 
@@ -92,6 +95,7 @@ public class AuditMaster implements Runnable {
         for(Site s:PollingSites){
             s.connect();
             s.getConnection().SendMessage(message);
+             Thread.sleep(2000);
             ElectRepository ER = new ElectRepository();
             Gson g =new Gson();
            String elects =g.toJson(ER.getAll());

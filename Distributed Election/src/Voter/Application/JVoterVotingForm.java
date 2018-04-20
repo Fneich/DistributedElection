@@ -137,6 +137,8 @@ public class JVoterVotingForm extends javax.swing.JFrame {
               //VVR.getElects();
         } catch (IOException ex) {
             Logger.getLogger(JVoterVotingForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(JVoterVotingForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btmgetElectsActionPerformed
 

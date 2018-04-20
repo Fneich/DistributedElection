@@ -66,23 +66,33 @@ public class PollingMaster implements Runnable {
     public void run() {
         Hoster hoster = new Hoster("","localhost",(this.Id+1)*1000,Message.MessageSide.Polling);
         while(true){
+            
             if(hoster.getConnection()!=null){                
                 if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Voter){
+                    System.out.println("moudi3");
                     PollingVoter voter= new PollingVoter(hoster.getConnection());                
                    }
+                
                  System.out.println(hoster.getConnection().getConnectionSide());
                    if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Audit){
-                       Message m = hoster.getConnection().WaitMessage();
-                       if(m.getKey()==MessageKey.Begin){
-                       Message elects = hoster.getConnection().WaitMessage();
-                       String ElectsString = elects.getValue();
-                       Gson g =new Gson();
-                       Elects =  g.fromJson(ElectsString,ArrayList.class);
-                       ElectionStatus=1;
-                       
-                       System.out.println("Election is Started");
-                       System.out.println(Elects.size());
-                       }
+                    
+                    try {
+                        Message m = hoster.getConnection().WaitMessage();
+                        if(m.getKey()==MessageKey.Begin){
+                            Message elects = hoster.getConnection().WaitMessage();
+                            String ElectsString = elects.getValue();
+                            Gson g =new Gson();
+                            System.out.println("=="+ElectsString);
+                            Elects =  g.fromJson(ElectsString,ArrayList.class);
+                            ElectionStatus=1;
+                            
+                            System.out.println("Election is Started");
+                            System.out.println(Elects.size());
+                        }
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(PollingMaster.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                   
                    }
                    
                    hoster.setConnection(null);

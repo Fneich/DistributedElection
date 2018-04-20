@@ -97,8 +97,8 @@ public class Connection {
      return m;
   }
   
-  public Message WaitMessage(){
-      while(this.LastMessage==null){System.out.println("wait !!");}
+  public Message WaitMessage() throws InterruptedException{
+      while(this.LastMessage==null){Thread.sleep(1000);}
       Message message=this.LastMessage;
       this.LastMessage=null;
       return message;

@@ -58,7 +58,7 @@ public class VoterVotingRepository {
         this.connection = connection;
     }
 
-    public List<Elect> getElects() throws IOException{
+    public List<Elect> getElects() throws IOException, InterruptedException{
         Random r=new Random();
         int randomNum = r.nextInt(VoterProgram.Pollings.size());
         Site s= VoterProgram.Pollings.get(randomNum);
@@ -66,6 +66,7 @@ public class VoterVotingRepository {
         Message message = new Message(MessageKey.Elects,MessageSide.Voter,"");
         this.connection=s.getConnection();
         this.connection .SendMessage(message);
+        System.out.println("moudi1");
         Message elects =this.connection .WaitMessage();
         if(elects.getKey()==MessageKey.Elects && elects.getSide()==MessageSide.Polling){
             
@@ -78,7 +79,7 @@ public class VoterVotingRepository {
         return null;
     }
     
-        public String getVotingId(String voterId) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException{
+        public String getVotingId(String voterId) throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException, InterruptedException{
 
     Connecter connecter = new Connecter("","localhost",Message.MessageSide.Voter);
     connecter.ConnectTo(10000);

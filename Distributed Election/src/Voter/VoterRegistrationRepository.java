@@ -52,7 +52,7 @@ public class VoterRegistrationRepository {
         this.voter = voter;
     }
     
-    public String getVotingId() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException{
+    public String getVotingId() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException, InterruptedException{
 
     Connecter connecter = new Connecter("","localhost",MessageSide.Voter);
     connecter.ConnectTo(10000);

@@ -17,6 +17,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import javax.crypto.BadPaddingException;
@@ -48,7 +49,7 @@ public class VoterProgram {
             Site p3 = new Site("localhost",4000,Message.MessageSide.Voter,Message.MessageSide.Polling,null);
             Site p4 = new Site("localhost",5000,Message.MessageSide.Audit,Message.MessageSide.Polling,null);
             Site p5 = new Site("localhost",6000,Message.MessageSide.Audit,Message.MessageSide.Polling,null);
-
+            Pollings = new ArrayList<Site>();
             Pollings.add(p1);
             Pollings.add(p2);
             Pollings.add(p3);
@@ -58,6 +59,7 @@ public class VoterProgram {
 
     private static void addAuditSite() {
         Site a1 = new Site("localhost",10000,Message.MessageSide.Audit,Message.MessageSide.Polling,null);
+        Audits  = new ArrayList<Site>();
         Audits.add(a1);
     }
 }
