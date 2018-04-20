@@ -19,7 +19,7 @@ public class AuditProgram {
     
    
     
-    public static void main(String args[]) throws IOException{
+    public static void main(String args[]) throws IOException, InterruptedException{
 
         Data.LoadCitizensData();
         Random r=new Random();

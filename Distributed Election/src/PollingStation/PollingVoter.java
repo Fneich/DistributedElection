@@ -70,10 +70,13 @@ public class PollingVoter implements Runnable{
       Vote v =Vote.fromJson(info);
       String votingid =v.getVoteId();
       System.out.println(votingid );
-      verification(votingid);
-      Message result = new Message(Message.MessageKey.Accept,Message.MessageSide.Polling,"");
-      connection.SendMessage(result); 
-      AddVote(v);
+      String resultString =String.valueOf( verification(votingid));
+      Message result = new Message(Message.MessageKey.Result,Message.MessageSide.Polling,resultString);
+      connection.SendMessage(result);
+      if(verification(votingid)){
+          AddVote(v);
+      }
+      
       }
     
 
@@ -89,8 +92,11 @@ public class PollingVoter implements Runnable{
             Random r = new Random();
             int randomNum = r.nextInt(PollingMaster.AuditSites.size());
  
-        PollingAudit pollingAudit= new PollingAudit(PollingMaster.AuditSites.get(randomNum).getConnection()); 
-        
+            PollingAudit pollingAudit= new PollingAudit(PollingMaster.AuditSites.get(randomNum).getConnection()); 
+            while(pollingAudit.verification!=0){System.out.println("wait");}
+            if(pollingAudit.verification==1){return true;}
+            if(pollingAudit.verification==-1){return false;}
+            
         return true;
     }
     public void AddVote(Vote v){
