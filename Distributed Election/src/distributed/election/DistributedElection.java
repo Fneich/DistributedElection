@@ -6,17 +6,23 @@
 package distributed.election;
 
 import Blockchain.*;
+import java.util.List;
+import java.util.Random;
 
 
 /**
  *
  * @author Fneich
  */
-public class DistributedElection {
+public class DistributedElection<T> {
 
-    /**
-     * @param args the command line arguments
-     */
+  
+    
+   public  T getRandomItem(List<T> list){
+       Random random = new Random();
+        int i=random.nextInt(list.size());
+       return list.get(i);
+   }
     public static void main(String[] args) {
         // TODO code application logic here
         

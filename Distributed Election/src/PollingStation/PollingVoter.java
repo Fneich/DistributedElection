@@ -10,6 +10,8 @@ import Blockchain.Vote;
 import Blockchain.Voter;
 import Communications.Connection;
 import Communications.Message;
+import Communications.Message.MessageKey;
+import Communications.Message.MessageSide;
 import Encryption.AsymetricEncryption;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -59,7 +61,17 @@ public class PollingVoter implements Runnable{
     private void ResultService(Message message) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    private void ElectsService(Message message) throws IOException {
+       Message electmessage = connection.WaitMessage();
+       Gson g = new Gson();
+       if(electmessage.getKey()==MessageKey.Elects && electmessage.getSide()==MessageSide.Voter){
+        Message response = new Message(MessageKey.Elects,MessageSide.Voter,g.toJson(PollingMaster.Elects) );
+        this.connection .SendMessage(message);
+        this.connection.closeConnection();
+       
+       }
+   
+    }
     private void VoteService(Message message) throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, IOException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException {
          AsymetricEncryption AE = new AsymetricEncryption();
       Gson g=new Gson();
@@ -91,7 +103,6 @@ public class PollingVoter implements Runnable{
     public boolean verification(String VoterId){
             Random r = new Random();
             int randomNum = r.nextInt(PollingMaster.AuditSites.size());
- 
             PollingAudit pollingAudit= new PollingAudit(PollingMaster.AuditSites.get(randomNum).getConnection()); 
             while(pollingAudit.verification!=0){System.out.println("wait");}
             if(pollingAudit.verification==1){return true;}

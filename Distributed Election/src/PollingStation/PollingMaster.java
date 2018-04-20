@@ -68,17 +68,20 @@ public class PollingMaster implements Runnable {
         while(true){
             if(hoster.getConnection()!=null){                
                 if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Voter){
-                    PollingVoter audit= new PollingVoter(hoster.getConnection());                
+                    PollingVoter voter= new PollingVoter(hoster.getConnection());                
                    }
                  System.out.println(hoster.getConnection().getConnectionSide());
                    if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Audit){
                        Message m = hoster.getConnection().WaitMessage();
                        if(m.getKey()==MessageKey.Begin){
-                       String ElectsString = m.getValue();
+                       Message elects = hoster.getConnection().WaitMessage();
+                       String ElectsString = elects.getValue();
                        Gson g =new Gson();
                        Elects =  g.fromJson(ElectsString,ArrayList.class);
                        ElectionStatus=1;
+                       
                        System.out.println("Election is Started");
+                       System.out.println(Elects.size());
                        }
                    }
                    

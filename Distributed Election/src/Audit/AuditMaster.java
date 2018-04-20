@@ -12,6 +12,8 @@ import Communications.Message;
 import Communications.Message.MessageKey;
 import Communications.Message.MessageSide;
 import Communications.Site;
+import Database.ElectRepository;
+import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -86,12 +88,18 @@ public class AuditMaster implements Runnable {
    
     public void StartElection() throws IOException, InterruptedException{
         Message message = new Message(MessageKey.Begin,MessageSide.Audit,"");
-        Message Disconnectmessage = new Message(MessageKey.Disconnect,MessageSide.Audit,"");
+        //Message Disconnectmessage = new Message(MessageKey.Disconnect,MessageSide.Audit,"");
         for(Site s:PollingSites){
             s.connect();
             s.getConnection().SendMessage(message);
+            ElectRepository ER = new ElectRepository();
+            Gson g =new Gson();
+           String elects =g.toJson(ER.getAll());
+            Message ElectsMessage = new Message(MessageKey.Information,MessageSide.Audit,elects);       
+            s.getConnection().SendMessage(ElectsMessage);
             Thread.sleep(2000);
-            s.getConnection().SendMessage(Disconnectmessage);
+            //s.getConnection().SendMessage(Disconnectmessage);
+            s.getConnection().closeConnection();
         }
     }
 

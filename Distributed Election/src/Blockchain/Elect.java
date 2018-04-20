@@ -63,7 +63,11 @@ public class Elect {
      
  }
   
-   
+    public String Represent(){
+
+     return this.Id + "." + this.FirstName + " " + this.LastName + "-" + this.Party;
+     
+ }
     
     
     

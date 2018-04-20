@@ -108,9 +108,10 @@ public class Connection {
     return this.Recever.getPort();
   }
   
-  public void closeConnection(){
+  public void closeConnection() throws IOException{
       
-      
+      Message m = new Message(MessageKey.Disconnect,this.Side,"");
+      this.SendMessage(m);
   }
   
 }

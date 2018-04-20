@@ -5,6 +5,13 @@
  */
 package Voter.Application;
 
+import Blockchain.Elect;
+import Voter.VoterVotingRepository;
+import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Fneich
@@ -121,7 +128,16 @@ public class JVoterVotingForm extends javax.swing.JFrame {
     }//GEN-LAST:event_BtnBackActionPerformed
 
     private void btmgetElectsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmgetElectsActionPerformed
-        // TODO add your handling code here:
+        try {
+            VoterVotingRepository VVR = new VoterVotingRepository();
+            List<Elect> list = VVR.getElects();
+            for(Elect E:list){
+            comboElect.addItem(E.Represent());
+            }
+              //VVR.getElects();
+        } catch (IOException ex) {
+            Logger.getLogger(JVoterVotingForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btmgetElectsActionPerformed
 
     /**
