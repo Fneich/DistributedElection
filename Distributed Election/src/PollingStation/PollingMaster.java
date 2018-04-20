@@ -8,11 +8,13 @@ package PollingStation;
 
 import Audit.AuditMaster;
 import Audit.AuditVoter;
+import Blockchain.Elect;
 import Communications.Connection;
 import Communications.Hoster;
 import Communications.Message;
 import Communications.Message.MessageKey;
 import Communications.Site;
+import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -35,7 +37,8 @@ public class PollingMaster implements Runnable {
         private int Id;
         public static List<Site> AuditSites;
         private Thread threadPollingMaster;
-        private int ElectionStatus =0;
+        public static int ElectionStatus =0;
+        public static  ArrayList<Elect> Elects;
         
 
     public PollingMaster(int id) throws IOException {
@@ -69,7 +72,11 @@ public class PollingMaster implements Runnable {
                    }
                  System.out.println(hoster.getConnection().getConnectionSide());
                    if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Audit){
-                       if(hoster.getConnection().WaitMessage().getKey()==MessageKey.Begin){
+                       Message m = hoster.getConnection().WaitMessage();
+                       if(m.getKey()==MessageKey.Begin){
+                       String ElectsString = m.getValue();
+                       Gson g =new Gson();
+                       Elects =  g.fromJson(ElectsString,ArrayList.class);
                        ElectionStatus=1;
                        System.out.println("Election is Started");
                        }

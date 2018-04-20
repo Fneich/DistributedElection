@@ -5,6 +5,9 @@
  */
 package Voter.Application;
 
+import PollingStation.PollingMaster;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Fneich
@@ -82,7 +85,13 @@ public class JVoterMenuForm extends javax.swing.JFrame {
     }//GEN-LAST:event_btmRegistrationActionPerformed
 
     private void btmVoteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmVoteActionPerformed
-        JVoterVotingForm.main(null);
+        
+      //  if(PollingMaster.ElectionStatus==1){
+            JVoterVotingForm.main(null);
+      //  }else{
+          //  JOptionPane.showMessageDialog(null, "The voting process has not yet started");
+       // }
+        
     }//GEN-LAST:event_btmVoteActionPerformed
 
     /**
