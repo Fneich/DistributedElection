@@ -14,7 +14,7 @@ import java.io.IOException;
 public class PollingProgram {
     public static int Status=0;
     public static void main(String args[]) throws IOException{
-        PollingMaster pm =new PollingMaster(1);
+        
     }
     
 }

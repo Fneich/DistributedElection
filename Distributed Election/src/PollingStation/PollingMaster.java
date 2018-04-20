@@ -11,6 +11,8 @@ import Audit.AuditVoter;
 import Communications.Connection;
 import Communications.Hoster;
 import Communications.Message;
+import Communications.Message.MessageKey;
+import Communications.Site;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -31,27 +33,49 @@ import java.util.logging.Logger;
  */
 public class PollingMaster implements Runnable {
         private int Id;
-        private List<Connection> Connections;
+        public static List<Site> AuditSites;
         private Thread threadPollingMaster;
+        private int ElectionStatus =0;
         
 
     public PollingMaster(int id) throws IOException {
         this.Id=id;
-        Connections = new ArrayList<Connection>();
+        AuditSites = new ArrayList<Site>();
 
         this.threadPollingMaster = new Thread(this);
         threadPollingMaster.start();
     }
+    public List<Site> getPollingSites() {
+        return AuditSites;
+    }
+        public void addAuditSitesSite(){
+            Site a1 = new Site("localhost",10000,Message.MessageSide.Audit,Message.MessageSide.Polling,null);
+            Site a2 = new Site("localhost",20000,Message.MessageSide.Audit,Message.MessageSide.Polling,null);
 
+
+            this.AuditSites.add(a1);
+            this.AuditSites.add(a2);
+
+
+        }
 
     @Override
     public void run() {
         Hoster hoster = new Hoster("","localhost",(this.Id+1)*1000,Message.MessageSide.Polling);
         while(true){
-            if(hoster.getConnection()!=null){
-                PollingVoter audit= new PollingVoter(hoster.getConnection());
-                Connections.add(hoster.getConnection());
-                hoster.setConnection(null);
+            if(hoster.getConnection()!=null){                
+                if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Voter){
+                    PollingVoter audit= new PollingVoter(hoster.getConnection());                
+                   }
+                 System.out.println(hoster.getConnection().getConnectionSide());
+                   if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Audit){
+                       if(hoster.getConnection().WaitMessage().getKey()==MessageKey.Begin){
+                       ElectionStatus=1;
+                       System.out.println("Election is Started");
+                       }
+                   }
+                   
+                   hoster.setConnection(null);
             }
         }
         

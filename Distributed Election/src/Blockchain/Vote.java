@@ -5,11 +5,17 @@
  */
 package Blockchain;
 
+import com.google.gson.Gson;
 import java.util.Objects;
 
 
 
 public class Vote {
+
+    public static Vote fromJson(String message) {
+           Gson g=new Gson();
+    return g.fromJson(message, Vote.class);
+    }
     
 private String VoterId;
 private int ElectId;

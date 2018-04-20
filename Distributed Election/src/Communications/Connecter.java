@@ -5,8 +5,7 @@
  */
 package Communications;
 
-import Testing.SocketListener;
-import Testing.SocketSender;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;

@@ -32,6 +32,7 @@ public class ReceverRepository implements Runnable {
                 System.out.println("I am waiting message");
                 Message lastmessage=connection.ReceveMessage();
                 connection.setLastMessage(lastmessage);
+                System.out.println("HHHH "+lastmessage.getKey());
                 if(lastmessage.getKey()==Message.MessageKey.Disconnect){break;}
             } catch (IOException ex) {
                 Logger.getLogger(ReceverRepository.class.getName()).log(Level.SEVERE, null, ex);

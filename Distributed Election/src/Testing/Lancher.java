@@ -6,6 +6,7 @@
 package Testing;
 
 import Audit.AuditProgram;
+import PollingStation.PollingMaster;
 import java.io.IOException;
 import java.net.ServerSocket;
 
@@ -15,7 +16,10 @@ import java.net.ServerSocket;
  */
 public class Lancher {
      public static void main(String args[]) throws IOException{
-     ServerSocket serverSocket = new ServerSocket(0);
-    System.out.println("listening on port " + serverSocket.getLocalPort());
+            PollingMaster pm1 =new PollingMaster(1);
+            PollingMaster pm2 =new PollingMaster(2);
+            PollingMaster pm3 =new PollingMaster(3);
+            PollingMaster pm4 =new PollingMaster(4);
+            PollingMaster pm5 =new PollingMaster(5);
      }
 }

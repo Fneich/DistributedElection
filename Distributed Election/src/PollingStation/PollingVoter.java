@@ -6,6 +6,7 @@
 package PollingStation;
 
 import Audit.Data;
+import Blockchain.Vote;
 import Blockchain.Voter;
 import Communications.Connection;
 import Communications.Message;
@@ -23,6 +24,7 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Random;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -38,11 +40,7 @@ public class PollingVoter implements Runnable{
     @Override
     public void run() {
       try{
-
-
-
-        Message message = connection.ReceveMessage();
-        
+        Message message = connection.ReceveMessage();       
         if(message.getSide()==Message.MessageSide.Voter && message.getKey()==Message.MessageKey.Result){ResultService(message);}
         if(message.getSide()==Message.MessageSide.Voter && message.getKey()==Message.MessageKey.Vote){VoteService(message);}
       
@@ -62,9 +60,22 @@ public class PollingVoter implements Runnable{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private void VoteService(Message message) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+    private void VoteService(Message message) throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, IOException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException {
+         AsymetricEncryption AE = new AsymetricEncryption();
+      Gson g=new Gson();
+      Message YourKey = new Message(Message.MessageKey.PublicKey,Message.MessageSide.Audit,g.toJson(AE.getGenerateKeys().getPublicKey().getEncoded()) );
+      connection.SendMessage(YourKey);     
+      Message YourInfo = connection.WaitMessage();
+      String info=AE.decryptText(YourInfo.getValue());
+      Vote v =Vote.fromJson(info);
+      String votingid =v.getVoteId();
+      System.out.println(votingid );
+      verification(votingid);
+      Message result = new Message(Message.MessageKey.Accept,Message.MessageSide.Polling,"");
+      connection.SendMessage(result); 
+      AddVote(v);
+      }
+    
 
     public Connection getConnection() {
         return connection;
@@ -74,6 +85,15 @@ public class PollingVoter implements Runnable{
         this.connection = connection;
     }
     
-    
-  
+    public boolean verification(String VoterId){
+            Random r = new Random();
+            int randomNum = r.nextInt(PollingMaster.AuditSites.size());
+ 
+        PollingAudit pollingAudit= new PollingAudit(PollingMaster.AuditSites.get(randomNum).getConnection()); 
+        
+        return true;
+    }
+    public void AddVote(Vote v){
+      
+    }
 }

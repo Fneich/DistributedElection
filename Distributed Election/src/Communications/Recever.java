@@ -49,8 +49,9 @@ public class Recever {
            this.Socket = this.serverSocket.accept();
        }         
        BufferedReader socketReader = new BufferedReader(new InputStreamReader(this.Socket.getInputStream()));
-       String inMsg = socketReader.readLine();
+       String inMsg = socketReader.readLine();       
        Message message = Message.fromJson(inMsg);
+       System.out.println(message.getKey());
        return message;
     }
 }

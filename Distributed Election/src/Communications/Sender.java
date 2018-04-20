@@ -43,7 +43,6 @@ public class Sender {
     }
     
        public void SendMessage(Message message) throws IOException{
-
         BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(this.Socket.getOutputStream()));
         socketWriter.write(message.toJson());
         socketWriter.newLine();

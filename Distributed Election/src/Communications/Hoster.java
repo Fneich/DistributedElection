@@ -7,8 +7,6 @@ package Communications;
 
 import Communications.Message.MessageKey;
 import Communications.Message.MessageSide;
-import Testing.SocketListener;
-import Testing.SocketSender;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -102,6 +100,7 @@ public class Hoster implements Runnable{
                     socketWriter.write(myportmessage.toJson());
                     socketWriter.newLine();
                     socketWriter.flush();
+                    c.setConnectionSide(portmessage.getSide());
                     this.connection = c;
                 }
 

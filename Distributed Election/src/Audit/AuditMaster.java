@@ -9,7 +9,9 @@ package Audit;
 import Communications.Connection;
 import Communications.Hoster;
 import Communications.Message;
+import Communications.Message.MessageKey;
 import Communications.Message.MessageSide;
+import Communications.Site;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -28,28 +30,51 @@ import java.util.logging.Logger;
 
 public class AuditMaster implements Runnable {
         private int Id;
-        private List<Connection> Connections;
+        private List<Site> PollingSites;
         private Thread threadAuditMaster;
         
 
     public AuditMaster(int id) throws IOException {
         this.Id=id;
-        Connections = new ArrayList<Connection>();
+        PollingSites = new ArrayList<Site>();
 
         this.threadAuditMaster = new Thread(this);
         threadAuditMaster.start();
     }
 
+    public List<Site> getPollingSites() {
+        return PollingSites;
+    }
+        public void addPollingSite(){
+            Site p1 = new Site("localhost",2000,MessageSide.Audit,MessageSide.Polling,null);
+            Site p2 = new Site("localhost",3000,MessageSide.Audit,MessageSide.Polling,null);
+            Site p3 = new Site("localhost",4000,MessageSide.Audit,MessageSide.Polling,null);
+            Site p4 = new Site("localhost",5000,MessageSide.Audit,MessageSide.Polling,null);
+            Site p5 = new Site("localhost",6000,MessageSide.Audit,MessageSide.Polling,null);
+
+            this.PollingSites.add(p1);
+            this.PollingSites.add(p2);
+            this.PollingSites.add(p3);
+            this.PollingSites.add(p4);
+            this.PollingSites.add(p5);
+
+        }
 
     @Override
     public void run() {
         Hoster hoster = new Hoster("","localhost",this.Id*10000,MessageSide.Audit);
         while(true){
             try {
-                if(hoster.getConnection()!=null){           
-                   AuditVoter audit= new AuditVoter(hoster.getConnection());
-                   Connections.add(hoster.getConnection());
+                if(hoster.getConnection()!=null){ 
+                   if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Voter){
+                    AuditVoter audit= new AuditVoter(hoster.getConnection());                  
+                   }
+                   if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Polling){
+                       
+                   }
+                   
                    hoster.setConnection(null);
+                  
                 }
                 
             } catch (IOException ex) {
@@ -58,6 +83,24 @@ public class AuditMaster implements Runnable {
         }
         
     }
+   
+    public void StartElection() throws IOException, InterruptedException{
+        Message message = new Message(MessageKey.Begin,MessageSide.Audit,"");
+        Message Disconnectmessage = new Message(MessageKey.Disconnect,MessageSide.Audit,"");
+        for(Site s:PollingSites){
+            s.connect();
+            s.getConnection().SendMessage(message);
+            Thread.sleep(2000);
+            s.getConnection().SendMessage(Disconnectmessage);
+        }
     }
+
+   public void EndElection(){
+       
+       
+    }
+
+
+}
     
 

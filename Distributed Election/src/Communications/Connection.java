@@ -20,8 +20,17 @@ public class Connection {
     private String Id;
     private String IP;
     private MessageSide Side;
+    private MessageSide ConnectionSide;
     private Recever Recever;
     private Sender Sender;
+
+    public void setConnectionSide(MessageSide ConnectionSide) {
+        this.ConnectionSide = ConnectionSide;
+    }
+
+    public MessageSide getConnectionSide() {
+        return ConnectionSide;
+    }
     private Message LastMessage;
     private ReceverRepository receverRepository ;
 
