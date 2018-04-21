@@ -29,10 +29,15 @@ public class ReceverRepository implements Runnable {
     public void run() {
         while(true){
             try {
+                
                 Message lastmessage=connection.ReceveMessage();
                 connection.setLastMessage(lastmessage);
+                System.out.println(lastmessage.toJson());
+                System.out.println("-----------------");
+                System.out.println(connection.getLastMessage().toJson());
                 if(lastmessage.getKey()==Message.MessageKey.Disconnect){break;}
             } catch (IOException ex) {
+                
                 Logger.getLogger(ReceverRepository.class.getName()).log(Level.SEVERE, null, ex);
             }
 

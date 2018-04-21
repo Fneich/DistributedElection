@@ -6,11 +6,20 @@
 package Voter.Application;
 
 import Blockchain.Elect;
+import Blockchain.Vote;
 import Voter.VoterVotingRepository;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -53,6 +62,11 @@ public class JVoterVotingForm extends javax.swing.JFrame {
         jLabel6.setText("Elects:");
 
         btmSend.setText("Send");
+        btmSend.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btmSendActionPerformed(evt);
+            }
+        });
 
         BtnBack.setLabel("Back");
         BtnBack.addActionListener(new java.awt.event.ActionListener() {
@@ -131,6 +145,7 @@ public class JVoterVotingForm extends javax.swing.JFrame {
         try {
             VoterVotingRepository VVR = new VoterVotingRepository();
             List<Elect> list = VVR.getElects();
+            System.out.println(list.size());
             for(Elect E:list){
             comboElect.addItem(E.Represent());
             }
@@ -141,6 +156,41 @@ public class JVoterVotingForm extends javax.swing.JFrame {
             Logger.getLogger(JVoterVotingForm.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btmgetElectsActionPerformed
+
+    private void btmSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btmSendActionPerformed
+        if(txtVotingId.getText().equals("")){JOptionPane.showMessageDialog(null, "Please enter your VotingId");}
+        else{
+            try {
+                int electId = Integer.valueOf(comboElect.getSelectedItem().toString().split(".")[0]);
+                Vote v =new Vote(txtVotingId.getText(),electId);
+                VoterVotingRepository VVR = new VoterVotingRepository();
+                if(VVR.Vote(v)){
+                    JOptionPane.showMessageDialog(null, "Your Vote has been sent");
+                }else{
+                   JOptionPane.showMessageDialog(null, "Your VotingId is incorrect or your vote before"); 
+                }
+                
+            } catch (IOException ex) {
+                Logger.getLogger(JVoterVotingForm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(JVoterVotingForm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(JVoterVotingForm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NoSuchProviderException ex) {
+                Logger.getLogger(JVoterVotingForm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NoSuchPaddingException ex) {
+                Logger.getLogger(JVoterVotingForm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalBlockSizeException ex) {
+                Logger.getLogger(JVoterVotingForm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (BadPaddingException ex) {
+                Logger.getLogger(JVoterVotingForm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvalidKeyException ex) {
+                Logger.getLogger(JVoterVotingForm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InvalidKeySpecException ex) {
+                Logger.getLogger(JVoterVotingForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }//GEN-LAST:event_btmSendActionPerformed
 
     /**
      * @param args the command line arguments

@@ -11,6 +11,7 @@ import Communications.Connection;
 import Communications.Message;
 import Communications.Message.MessageKey;
 import Communications.Message.MessageSide;
+import Communications.Site;
 import Encryption.AsymetricEncryption;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -28,6 +29,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Random;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -53,13 +55,15 @@ public class VoterRegistrationRepository {
     }
     
     public String getVotingId() throws IOException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException, InterruptedException{
-
-    Connecter connecter = new Connecter("","localhost",MessageSide.Voter);
-    connecter.ConnectTo(10000);
-    Connection connection=null;
+        Random r=new Random();
+        int randomNum = r.nextInt(VoterProgram.Audits.size());
+        Site s= VoterProgram.Audits.get(randomNum);
+        System.out.println("Port:"+s.getPort());
+        
+        s.connect();
     System.out.println("I send a connection");
     while(true){
-    if(connecter.getConnection()!=null){connection=connecter.getConnection(); break;}
+    if(s.getConnection()!=null){connection=s.getConnection(); break;}
     }
     System.out.println("I receve an accept");
     Message registermessage= new Message(MessageKey.Regitration,MessageSide.Voter,"");

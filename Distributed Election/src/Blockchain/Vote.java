@@ -42,7 +42,11 @@ this.ElectId=electid;
     }
 
     
-  
+   public String toString(){
+     Gson g =new Gson();
+     return g.toJson(this);
+     
+ }
 
 
 

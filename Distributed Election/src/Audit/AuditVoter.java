@@ -41,8 +41,8 @@ public class AuditVoter implements Runnable {
 
        //socketReader = new BufferedReader(new InputStreamReader(connection.get.getInputStream()));
        //socketWriter = new BufferedWriter(new OutputStreamWriter(connection.getActiveSocket().getOutputStream()));
-        System.out.println("I wait a registration");
-        
+        System.out.println("I wait a registration5ara");
+        Thread.sleep(2000);
         Message message = connection.WaitMessage();
     
         System.out.println("I receve a registration");
@@ -51,7 +51,7 @@ public class AuditVoter implements Runnable {
         if(message.getSide()==Message.MessageSide.Voter && message.getKey()==Message.MessageKey.Regitration){VoterService();}
        // if(message.getSide()==Message.MessageSide.Polling && message.getKey()==Message.MessageKey.Information){VoterService(message);}
 
-      this.thread.join();
+     
     }catch(Exception e){
       e.printStackTrace();
     }

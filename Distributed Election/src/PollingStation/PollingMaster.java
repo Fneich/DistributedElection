@@ -53,11 +53,11 @@ public class PollingMaster implements Runnable {
     }
         public void addAuditSitesSite(){
             Site a1 = new Site("localhost",10000,Message.MessageSide.Audit,Message.MessageSide.Polling,null);
-            Site a2 = new Site("localhost",20000,Message.MessageSide.Audit,Message.MessageSide.Polling,null);
+            //Site a2 = new Site("localhost",20000,Message.MessageSide.Audit,Message.MessageSide.Polling,null);
 
 
             this.AuditSites.add(a1);
-            this.AuditSites.add(a2);
+            //this.AuditSites.add(a2);
 
 
         }
@@ -66,36 +66,37 @@ public class PollingMaster implements Runnable {
     public void run() {
         Hoster hoster = new Hoster("","localhost",(this.Id+1)*1000,Message.MessageSide.Polling);
         while(true){
-            
-            if(hoster.getConnection()!=null){                
-                if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Voter){
-                    System.out.println("moudi3");
-                    PollingVoter voter= new PollingVoter(hoster.getConnection());                
-                   }
-                
-                 System.out.println(hoster.getConnection().getConnectionSide());
-                   if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Audit){
-                    
-                    try {
-                        Message m = hoster.getConnection().WaitMessage();
-                        if(m.getKey()==MessageKey.Begin){
-                            Message elects = hoster.getConnection().WaitMessage();
-                            String ElectsString = elects.getValue();
-                            Gson g =new Gson();
-                            System.out.println("=="+ElectsString);
-                            Elects =  g.fromJson(ElectsString,ArrayList.class);
-                            ElectionStatus=1;
-                            
-                            System.out.println("Election is Started");
-                            System.out.println(Elects.size());
-                        }
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(PollingMaster.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                Thread.sleep(1000);
+                if(hoster.getConnection()!=null){
+                    System.out.println("houhou="+hoster.getConnection().getConnectionSide());
+                    if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Voter){
+                        
+                        PollingVoter voter= new PollingVoter(hoster.getConnection());
+                    }                  
+                    if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Audit){
+                        
+                       
+                            Message m = hoster.getConnection().WaitMessage();
+                            if(m.getKey()==MessageKey.Begin){
+                                Message elects = hoster.getConnection().WaitMessage();
+                                String ElectsString = elects.getValue();
+                                Gson g =new Gson();
+                                System.out.println("=="+ElectsString);
+                                Elects =  g.fromJson(ElectsString,ArrayList.class);
+                                ElectionStatus=1;
+                                
+                                System.out.println("Election is Started");
+                                System.out.println(Elects.size());
+                            }
+                        
+
                     }
-                   
-                   }
-                   
-                   hoster.setConnection(null);
+                    
+                    hoster.setConnection(null);
+                }
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PollingMaster.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         

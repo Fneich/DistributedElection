@@ -42,7 +42,7 @@ public class PollingVoter implements Runnable{
     @Override
     public void run() {
       try{
-          System.out.println("moudi");
+         
         Message message = connection.WaitMessage();       
         if(message.getSide()==Message.MessageSide.Voter && message.getKey()==Message.MessageKey.Result){ResultService(message);}
         if(message.getSide()==Message.MessageSide.Voter && message.getKey()==Message.MessageKey.Vote){VoteService(message);}
@@ -62,20 +62,19 @@ public class PollingVoter implements Runnable{
     private void ResultService(Message message) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    private void ElectsService(Message message) throws IOException, InterruptedException {
-        
-       Message electmessage = connection.WaitMessage();
+    private void ElectsService(Message electmessage) throws IOException, InterruptedException {
        Gson g = new Gson();
        if(electmessage.getKey()==MessageKey.Elects && electmessage.getSide()==MessageSide.Voter){
-        Message response = new Message(MessageKey.Elects,MessageSide.Voter,g.toJson(PollingMaster.Elects) );
-        this.connection .SendMessage(message);
+        Message response = new Message(MessageKey.Elects,MessageSide.Polling,g.toJson(PollingMaster.Elects) );
+        this.connection .SendMessage(response);
+        Thread.sleep(5000);
         this.connection.closeConnection();
        
        }
    
     }
     private void VoteService(Message message) throws NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, IOException, InvalidKeyException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InterruptedException {
-         AsymetricEncryption AE = new AsymetricEncryption();
+      AsymetricEncryption AE = new AsymetricEncryption();
       Gson g=new Gson();
       Message YourKey = new Message(Message.MessageKey.PublicKey,Message.MessageSide.Audit,g.toJson(AE.getGenerateKeys().getPublicKey().getEncoded()) );
       connection.SendMessage(YourKey);     

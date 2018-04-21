@@ -31,10 +31,9 @@ import java.util.logging.Logger;
 
 
 public class AuditMaster implements Runnable {
-        private int Id;
         private List<Site> PollingSites;
         private Thread threadAuditMaster;
-        
+        private int Id;
 
     public AuditMaster(int id) throws IOException {
         this.Id=id;
@@ -64,12 +63,15 @@ public class AuditMaster implements Runnable {
 
     @Override
     public void run() {
-        Hoster hoster = new Hoster("","localhost",this.Id*10000,MessageSide.Audit);
+        Hoster hoster = new Hoster("","localhost",this.Id,MessageSide.Audit);
+
         while(true){
             try {
+                    System.out.println("Wait Connect !!"+ this.Id);
+                    Thread.sleep(1000);
                 
                 if(hoster.getConnection()!=null){ 
-                    System.out.println("moudi2");
+                    System.out.println("have Connect !!");
                    if(hoster.getConnection().getConnectionSide()==Message.MessageSide.Voter){
                     AuditVoter audit= new AuditVoter(hoster.getConnection());                  
                    }
@@ -78,13 +80,16 @@ public class AuditMaster implements Runnable {
                        AuditPolling AP = new AuditPolling(hoster.getConnection());
                    }
                    
-                   //hoster.setConnection(null);
+                   hoster.setConnection(null);
                   
                 }
                 
             } catch (IOException ex) {
                 Logger.getLogger(AuditMaster.class.getName()).log(Level.SEVERE, null, ex);
             }
+            catch (InterruptedException ex) {
+                    Logger.getLogger(AuditMaster.class.getName()).log(Level.SEVERE, null, ex);
+                }
         }
         
     }

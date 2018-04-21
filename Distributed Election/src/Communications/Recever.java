@@ -26,6 +26,7 @@ public class Recever {
         this.Ip = Ip;
         this.serverSocket = new ServerSocket(0, 100,InetAddress.getByName(this.Ip));
         this.Port = this.serverSocket.getLocalPort();
+        System.out.println("choisit:"+this.Port );
     }
 
     public String getIp() {

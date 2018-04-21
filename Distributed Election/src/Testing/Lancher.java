@@ -32,7 +32,7 @@ public class Lancher {
             PollingMaster pm4 =new PollingMaster(4);
             PollingMaster pm5 =new PollingMaster(5);
            Thread.sleep(2000);
-            AuditProgram.main(null);
-            VoterProgram.main(null);
+            //AuditProgram.main(null);
+           // VoterProgram.main(null);
      }
 }

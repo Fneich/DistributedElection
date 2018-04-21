@@ -24,7 +24,7 @@ public class AuditProgram {
         Data.LoadCitizensData();
         Random r=new Random();
         
-        AuditMaster auditMaster = new AuditMaster(2);
+        AuditMaster auditMaster = new AuditMaster(20000);
         auditMaster.addPollingSite();
         auditMaster.StartElection();
         //Data.GenerateVoterId();

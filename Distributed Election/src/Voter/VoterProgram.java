@@ -47,8 +47,8 @@ public class VoterProgram {
             Site p1 = new Site("localhost",2000,Message.MessageSide.Voter,Message.MessageSide.Polling,null);
             Site p2 = new Site("localhost",3000,Message.MessageSide.Voter,Message.MessageSide.Polling,null);
             Site p3 = new Site("localhost",4000,Message.MessageSide.Voter,Message.MessageSide.Polling,null);
-            Site p4 = new Site("localhost",5000,Message.MessageSide.Audit,Message.MessageSide.Polling,null);
-            Site p5 = new Site("localhost",6000,Message.MessageSide.Audit,Message.MessageSide.Polling,null);
+            Site p4 = new Site("localhost",5000,Message.MessageSide.Voter,Message.MessageSide.Polling,null);
+            Site p5 = new Site("localhost",6000,Message.MessageSide.Voter,Message.MessageSide.Polling,null);
             Pollings = new ArrayList<Site>();
             Pollings.add(p1);
             Pollings.add(p2);
@@ -58,7 +58,7 @@ public class VoterProgram {
     }
 
     private static void addAuditSite() {
-        Site a1 = new Site("localhost",10000,Message.MessageSide.Audit,Message.MessageSide.Polling,null);
+        Site a1 = new Site("localhost",20000,Message.MessageSide.Voter,Message.MessageSide.Audit,null);
         Audits  = new ArrayList<Site>();
         Audits.add(a1);
     }

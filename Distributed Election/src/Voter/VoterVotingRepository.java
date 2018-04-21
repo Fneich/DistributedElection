@@ -3,6 +3,7 @@
 package Voter;
 
 import Blockchain.Elect;
+import Blockchain.Vote;
 import Blockchain.Voter;
 import Communications.Connecter;
 import Communications.Connection;
@@ -32,6 +33,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
@@ -57,25 +59,54 @@ public class VoterVotingRepository {
     public void setConnection(Connection connection) {
         this.connection = connection;
     }
+    public boolean Vote(Vote v) throws IOException, InterruptedException, NoSuchAlgorithmException, NoSuchProviderException, NoSuchPaddingException, UnsupportedEncodingException, IllegalBlockSizeException, BadPaddingException, InvalidKeyException, InvalidKeySpecException{
+        Random r=new Random();
+        int randomNum = r.nextInt(VoterProgram.Pollings.size());
+        Site s= VoterProgram.Pollings.get(randomNum);
+        s.connect();
+        
+        Message MyKey= connection.WaitMessage();          
+        AsymetricEncryption AE = new AsymetricEncryption();
+        Gson g =new Gson();
+        java.lang.reflect.Type listType = new TypeToken<byte[]>(){}.getType();
+        byte[] b =g.fromJson(MyKey.getValue(),listType);
+        String MyinfoEncrypted=AE.encryptText(v.toString(), b);      
+        Message message = new Message(MessageKey.Vote,MessageSide.Voter,MyinfoEncrypted);
+        this.connection=s.getConnection();
+         Thread.sleep(2000);
+        this.connection .SendMessage(message);
+         Message resultmessage =this.connection.WaitMessage();
+         if(resultmessage.getKey()==MessageKey.Accept && resultmessage.getSide()==MessageSide.Polling){        
+            return true;
+        }
+        return false;
+    }
 
     public List<Elect> getElects() throws IOException, InterruptedException{
         Random r=new Random();
         int randomNum = r.nextInt(VoterProgram.Pollings.size());
         Site s= VoterProgram.Pollings.get(randomNum);
+
         s.connect();
+        
         Message message = new Message(MessageKey.Elects,MessageSide.Voter,"");
         this.connection=s.getConnection();
+        //Scanner sc = new Scanner(System.in);
+        //sc.next();
+        Thread.sleep(2000);
         this.connection .SendMessage(message);
-        System.out.println("moudi1");
-        Message elects =this.connection .WaitMessage();
+        Message elects =this.connection.WaitMessage();
         if(elects.getKey()==MessageKey.Elects && elects.getSide()==MessageSide.Polling){
-            
             String ElectsString = elects.getValue();
-            Gson g =new Gson();
-            List<Elect> Elects =  g.fromJson(ElectsString,ArrayList.class);
+            Gson g =new Gson();      
+            
+            
+            List<Elect> Elects =g.fromJson(ElectsString,new TypeToken<List<Elect>>(){}.getType());
+            
             return Elects;
         }
         //PollingAudit pollingAudit= new PollingAudit(VoterProgram.Pollings.get(randomNum).getConnection()); 
+        
         return null;
     }
     

@@ -65,6 +65,7 @@ public class Connecter {
     }
     
     public void ConnectTo(int port) throws IOException{
+        System.out.println(this.Ip + ";;;;"+port);
          Socket s = new Socket(this.Ip,port);
          Connection c = new Connection("",this.Ip,this.messageSide);
          int myport = c.getReceverPort();

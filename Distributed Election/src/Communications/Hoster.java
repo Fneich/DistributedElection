@@ -82,33 +82,51 @@ public class Hoster implements Runnable{
 
     @Override
     public void run() {
+        ServerSocket ss=null;
+        while(true){
         try {
-            ServerSocket ss = new ServerSocket(this.port, 100,InetAddress.getByName(this.Ip));
-            while(true){
+            if(ss==null){
+                ss = new ServerSocket(this.port,100,InetAddress.getByName(this.Ip));
+            }
+                
+            
+                System.out.println("wait..."+ this.port);
                 Socket s = ss.accept();
-                System.out.println("Incoming Connection...");
+                System.out.println("Incoming Connection..."+ this.port);
                 BufferedReader socketReader = new BufferedReader(new InputStreamReader(s.getInputStream()));
                 String inMsg = socketReader.readLine();
                 Message portmessage = Message.fromJson(inMsg);
+                System.out.println("Incoming Connection...ya fneich1");
                 if(portmessage.getKey()==MessageKey.Connect){
+                    System.out.println("Incoming Connection...ya fneich2");
                     int port = Integer.parseInt(portmessage.getValue());
                     Connection c = new Connection(this.Id,this.Ip,this.messageSide);
                     c.CreateSender(port);
                     int myport = c.getReceverPort();
+                    System.out.println("Incoming Connection...ya fneich3");
                     Message myportmessage = new Message(MessageKey.Accept,messageSide,String.valueOf(myport)) ;
                     BufferedWriter socketWriter = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
                     socketWriter.write(myportmessage.toJson());
                     socketWriter.newLine();
                     socketWriter.flush();
+                    System.out.println("Incoming Connection...ya fneich4");
                     c.setConnectionSide(portmessage.getSide());
                     this.connection = c;
+                    System.out.println("Incoming Connection...ya fneich5");
                 }
 
-            }} catch (UnknownHostException ex) {
+            }
+        catch (UnknownHostException ex) {
+                
             Logger.getLogger(Hoster.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
+            
             Logger.getLogger(Hoster.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        
+        }
+        
     }
     
     

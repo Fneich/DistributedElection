@@ -21,6 +21,7 @@ public class Site {
         this.messageside = messageside;
         this.Anothermessageside=anothermessageside;
         this.connection = connection;
+        
     }
 
     public MessageSide getAnothermessageside() {
@@ -34,6 +35,7 @@ public class Site {
          Connecter connecter = new Connecter("",this.Ip,this.messageside);
          connecter.ConnectTo(this.port);
          this.connection=connecter.getConnection();
+         this.connection.setConnectionSide(this.Anothermessageside);
     }
 
     public String getIp() {
